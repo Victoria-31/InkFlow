@@ -1,0 +1,24 @@
+@startuml sequence-demand
+title InkFlow — Création d'une demande de projet
+
+actor Client
+participant "Front\n(React)" as Front
+participant "API\n(Express)" as API
+database "PostgreSQL\n(Prisma)" as DB
+
+Client -> Front : remplit le formulaire\n(description, zone, taille, inspirations)
+Front -> Front : validation des champs
+Front -> API : POST /api/demands\n(Authorization: Bearer token)
+API -> API : vérifie le JWT + valide les données
+
+alt données valides
+  API -> DB : create(Demand + Inspirations)
+  DB --> API : demande créée
+  API --> Front : 201 Created + demande
+  Front --> Client : confirmation d'envoi
+else données invalides
+  API --> Front : 400 Bad Request + erreurs
+  Front --> Client : affiche les erreurs
+end
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml sequence-auth
+title InkFlow — Connexion (JWT)
+
+actor Utilisateur
+participant "Front\n(React)" as Front
+participant "API\n(Express)" as API
+database "PostgreSQL\n(Prisma)" as DB
+
+Utilisateur -> Front : saisit email + mot de passe
+Front -> API : POST /api/auth/login
+API -> DB : findUnique(User, email)
+DB --> API : user | null
+
+alt utilisateur trouvé et mot de passe valide (bcrypt.compare)
+  API -> API : génère JWT (id, rôle)
+  API --> Front : 200 + token
+  Front --> Utilisateur : redirection tableau de bord
+else identifiants invalides
+  API --> Front : 401 Unauthorized
+  Front --> Utilisateur : message d'erreur
+end
+
+== Accès à une route protégée ==
+
+Front -> API : GET /api/projects\n(Authorization: Bearer token)
+API -> API : vérifie le JWT
+alt token valide
+  API -> DB : findMany(Project, userId)
+  DB --> API : projets
+  API --> Front : 200 + projets
+else token absent ou expiré
+  API --> Front : 401 Unauthorized
+  Front --> Utilisateur : retour à la connexion
+end
+
+@enduml
