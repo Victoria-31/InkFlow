@@ -148,6 +148,12 @@ MANAGES ──────── PROJECT ──── CONTAINS ──── DRAW
 - `APPOINTMENT` — id · date_time · duration_min · type · statut · deposit_paid · created_at
 - `DRAWING` — id · version · file_url · comment · statut · created_at
 
+### Documents Merise
+
+Le MCD complet est disponible sur Google Drive :
+
+> 🔗 **Fichier Merise :** *https://drive.google.com/file/d/12tRRZDOyjPlgYnX6oTir2XLjYHGTTIct/view?usp=sharing*
+
 ---
 
 ## Rôles utilisateurs
