@@ -145,7 +145,7 @@ model Quote {
   description   String?     @db.Text
   status        QuoteStatus
   justification String?     @db.Text
-  validUntil    DateTime?   @map("valid_until") @db.Date
+  validUntil    DateTime    @map("valid_until") @db.Date // préremplie à émission + 7 jours par l'API, modifiable par le tatoueur
   respondedAt   DateTime?   @map("responded_at")
   createdAt     DateTime    @default(now()) @map("created_at")
 
