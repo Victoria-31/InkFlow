@@ -31,6 +31,7 @@ enum ProjectStatus {
 }
 
 enum QuoteStatus {
+  DRAFT
   SENT
   ACCEPTED
   REJECTED
@@ -41,6 +42,7 @@ enum AppointmentStatus {
   CONFIRMED
   DONE
   RESCHEDULED
+  CANCELLED
 }
 
 enum SketchStatus {
@@ -179,6 +181,7 @@ model Sketch {
 
   comments SketchComment[]
 
+  @@unique([projectId, version])
   @@map("sketch")
 }
 
