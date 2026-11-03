@@ -1,0 +1,16 @@
+# Local development database only
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: inkflow-db
+    environment:
+      POSTGRES_USER: inkflow
+      POSTGRES_PASSWORD: inkflow
+      POSTGRES_DB: inkflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - inkflow-db-data:/var/lib/postgresql/data
+
+volumes:
+  inkflow-db-data:
