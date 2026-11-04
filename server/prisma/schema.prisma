@@ -131,10 +131,10 @@ model Project {
   id                Int           @id @default(autoincrement())
   status            ProjectStatus @default(REQUEST)
   bodyArea          String        @map("body_area") @db.VarChar(100)
-  size              String?       @db.VarChar(50)
+  size              String        @db.VarChar(50)
   clientBudgetMin   Decimal?      @map("client_budget_min") @db.Decimal(8, 2)
   clientBudgetMax   Decimal?      @map("client_budget_max") @db.Decimal(8, 2)
-  clientNote        String        @map("client_note") @db.Text
+  clientNote        String        @map("client_note") @db.VarChar(2000)
   clientAvailability     Availability[] @default([]) @map("client_availability")
   clientFlexibleSchedule Boolean        @default(false) @map("client_flexible_schedule")
   internalNote      String?       @map("internal_note") @db.Text
