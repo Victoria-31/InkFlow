@@ -1,8 +1,9 @@
+import type { PublicArtist } from '@inkflow/shared';
 import { HttpError } from '../errors/http-error.js';
 import * as artistRepository from '../repositories/artist.repository.js';
 import * as tagRepository from '../repositories/tag.repository.js';
 
-export async function getPublicArtist(username: string) {
+export async function getPublicArtist(username: string): Promise<PublicArtist> {
   const artist = await artistRepository.findPublicProfileByUsername(username);
   if (!artist) {
     throw new HttpError(404, 'artist_not_found');

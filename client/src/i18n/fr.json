@@ -1,0 +1,62 @@
+{
+  "common": {
+    "loading": "Chargement…",
+    "genericError": "Une erreur est survenue. Réessayez dans quelques instants."
+  },
+  "notFound": {
+    "title": "Atelier introuvable",
+    "text": "Ce lien ne correspond à aucun atelier. Vérifiez l’adresse transmise par votre tatoueur."
+  },
+  "projectRequest": {
+    "title": "Parlez-moi de votre projet",
+    "intro": "Décrivez votre idée : je reviens vers vous par email pour en discuter.",
+    "specialties": "Spécialités",
+    "identity": "Vos coordonnées",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "project": "Votre projet",
+    "bodyArea": "Zone du corps",
+    "bodyAreaHint": "Exemple : avant-bras gauche",
+    "size": "Taille approximative",
+    "sizeHint": "Exemple : 10 cm",
+    "styles": "Styles",
+    "budget": "Budget (facultatif)",
+    "budgetMin": "Minimum (€)",
+    "budgetMax": "Maximum (€)",
+    "description": "Votre idée",
+    "descriptionHint": "Motif, ambiance, références… 2 000 caractères maximum.",
+    "availability": "Vos disponibilités",
+    "availabilityHint": "Cochez les demi-journées où vous êtes disponible.",
+    "flexibleSchedule": "Mon emploi du temps change souvent",
+    "requiredHint": "Tous les champs sont obligatoires, sauf le budget.",
+    "submit": "Envoyer ma demande",
+    "sending": "Envoi en cours…",
+    "successTitle": "Demande envoyée",
+    "successText": "{{name}} a bien reçu votre demande. Vous recevrez une réponse par email."
+  },
+  "days": {
+    "MON": "Lundi",
+    "TUE": "Mardi",
+    "WED": "Mercredi",
+    "THU": "Jeudi",
+    "FRI": "Vendredi",
+    "SAT": "Samedi",
+    "SUN": "Dimanche"
+  },
+  "halfDays": {
+    "AM": "Matin",
+    "PM": "Après-midi"
+  },
+  "errors": {
+    "required": "Ce champ est obligatoire.",
+    "too_long": "Ce texte est trop long.",
+    "invalid_email": "Adresse email invalide.",
+    "invalid_budget": "Indiquez un nombre entier positif.",
+    "budget_order": "Le minimum doit être inférieur ou égal au maximum.",
+    "availability_required": "Cochez au moins une demi-journée, ou indiquez que votre emploi du temps change souvent.",
+    "invalid_availability": "Demi-journée invalide.",
+    "not_working_slot": "L’atelier n’est pas ouvert sur l’une des demi-journées choisies.",
+    "unknown_tag": "Un des styles choisis n’existe plus."
+  }
+}
