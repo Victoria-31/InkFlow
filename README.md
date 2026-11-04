@@ -1,5 +1,7 @@
 # InkFlow
 
+[![CI](https://github.com/Victoria-31/InkFlow/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/Victoria-31/InkFlow/actions/workflows/ci.yml)
+
 > **« De la demande client à la réalisation — un seul outil. »**
 
 Plateforme SaaS de gestion de projets tatouage, dédiée aux tatoueurs indépendants et petits salons. InkFlow centralise l'ensemble du workflow créatif : de la demande client initiale jusqu'au suivi post-cicatrisation, en passant par la validation des dessins, la planification des rendez-vous et la gestion des paiements.
@@ -87,107 +89,127 @@ Les maquettes exploratoires sont disponibles sur Figma :
 
 ## Stack technique
 
+Monorepo **pnpm** (workspaces) en **TypeScript** : `client/`, `server/` et `shared/` (types, schémas de validation et transitions de statut communs au front et à l'API).
+
 ### Frontend
 | Technologie | Rôle |
 |---|---|
-| React + TypeScript | Composants réutilisables, typage fort |
-| Tailwind CSS | Design system cohérent, responsive |
-| React Router | Navigation SPA multi-vues |
-| Axios | Requêtes HTTP, intercepteurs JWT |
+| React 19 + Vite | SPA, serveur de dev avec proxy vers l'API |
+| Tailwind CSS 4 | Charte graphique déclarée dans `@theme` |
+| React Router | Navigation par modules (public, auth, client, atelier) |
+| Axios | Requêtes HTTP (`client/src/request/`) |
+| react-i18next | Textes de l'interface (`client/src/i18n/fr.json`) |
 
 ### Backend
 | Technologie | Rôle |
 |---|---|
-| Node.js + Express | API REST, logique métier |
-| JWT + Bcrypt | Authentification, gestion des rôles |
-| Multer | Upload fichiers (dessins, inspirations) |
-| Nodemailer + node-cron | Envoi automatique des fiches cicatrisation |
+| Node.js 22 + Express 5 | API REST en couches : routes → controllers → services → repositories |
+| Zod | Validation des données, schémas partagés avec le front |
+| JWT (cookie httpOnly) + Argon2 | Authentification et rôles tatoueur / client |
+| sharp | Aperçus d'esquisse basse définition avec filigrane |
+| Nodemailer (Brevo) | Emails : invitation, devis, conseils |
 
 ### Base de données
 | Technologie | Rôle |
 |---|---|
-| PostgreSQL | Base relationnelle, cohérente avec le MCD Merise |
-| Prisma ORM | Migrations typées, schéma auto-généré |
+| PostgreSQL 17 | Base relationnelle, issue du modèle Merise |
+| Prisma 6 | Schéma, migrations versionnées, seed |
 
-### Tests
+### Qualité
 | Technologie | Rôle |
 |---|---|
-| Vitest | Tests unitaires composants React |
-| Supertest | Tests d'intégration routes API |
+| Vitest + Supertest | Tests de l'API |
+| ESLint | Lint du front |
+| GitHub Actions | CI : lint, build et tests à chaque pull request |
 
-### Déploiement
+### Déploiement (prévu)
 | Technologie | Rôle |
 |---|---|
-| Railway / Render | Hébergement Node.js + PostgreSQL |
-| Vercel | Frontend React, CDN global |
-| Docker | Conteneurisation dev/prod |
-| Git + GitHub | Versionnage, CI/CD |
+| Vercel | Front |
+| Render | API |
+| PostgreSQL managé | Base de production |
+| Docker | Base PostgreSQL en développement |
 
 ---
 
-## Modèle de données (MCD — Merise)
+## Démarrer le projet
 
-5 entités principales :
+Prérequis : Node.js 22, pnpm, Docker.
 
-```
-USER ──── SENDS ──── DEMAND
-  │                    │
-  │               GENERATES
-  │                    │
-MANAGES ──────── PROJECT ──── CONTAINS ──── DRAWING
-                    │
-                SCHEDULES
-                    │
-               APPOINTMENT
+```bash
+pnpm install
+docker compose up -d                                  # PostgreSQL local
+cp server/.env.sample server/.env                     # variables d'environnement
+pnpm --filter @inkflow/server prisma:migrate          # applique les migrations
+pnpm --filter @inkflow/server db:seed                 # données de démonstration
+pnpm dev                                              # front (5173), API (3000), shared
 ```
 
-**Entités :**
-- `USER` — id · email · password_hash · first_name · last_name · phone · role · is_active · created_at
-- `DEMAND` — id · body_area · style · description · budget_min · budget_max · statut · created_at
-- `PROJECT` — id · title · statut · notes · created_at · updated_at
-- `APPOINTMENT` — id · date_time · duration_min · type · statut · deposit_paid · created_at
-- `DRAWING` — id · version · file_url · comment · statut · created_at
+| Commande | Rôle |
+|---|---|
+| `pnpm dev` | Lance le front, l'API et la compilation de `shared` |
+| `pnpm lint` | Lint de tous les packages |
+| `pnpm build` | Build de tous les packages |
+| `pnpm test` | Tests de tous les packages |
 
-### Documents Merise
+---
 
-Le MCD complet est disponible sur Google Drive :
+## Branches et intégration continue
 
-> 🔗 **Fichier Merise :** *https://drive.google.com/file/d/12tRRZDOyjPlgYnX6oTir2XLjYHGTTIct/view?usp=sharing*
+```
+feat/IN-xx ──PR──▶ dev ──PR (fin de sprint)──▶ main
+              CI           recette              production
+```
+
+- `main` : version en production.
+- `dev` : version de recette, branche par défaut.
+- Une branche par ticket Jira : `<type>/IN-xx` (`feat`, `fix`, `chore`, `docs`, `test`, `ci`).
+- Messages de commit : `IN-xx: description`.
+- La CI (lint, build, tests sur une base PostgreSQL) doit passer avant toute fusion.
+
+---
+
+## Modèle de données
+
+Le modèle a été conçu avec Merise (MCD → MLD → MPD), puis traduit en schéma Prisma : [`server/prisma/schema.prisma`](server/prisma/schema.prisma).
+
+Entités : Account, Artist, Studio, Project, Quote, Appointment, Sketch, Reference, RequestComment, SketchComment, Tag, ProjectTag, ArtistTag.
+
+> 🔗 **Documents Merise :** *https://drive.google.com/file/d/12tRRZDOyjPlgYnX6oTir2XLjYHGTTIct/view?usp=sharing*
 
 ---
 
 ## Rôles utilisateurs
 
 ```
-CLIENT      → Envoyer une demande · Consulter son projet · Valider un dessin · Confirmer un RDV
-TATOUEUR    → Gérer les demandes · Gérer les projets · Planifier les RDV · Soumettre des dessins · consulter l'agenda
-GÉRANT      → Accès global · Statistiques salon · Consulter l'agenda · Gestion des comptes
+PROSPECT    → Envoyer une demande depuis le lien public du tatoueur
+CLIENT      → Suivre son projet · Accepter un devis · Valider une esquisse · Consulter ses conseils
+TATOUEUR    → Gérer les demandes et les projets · Envoyer les devis · Planifier les séances · Déposer les esquisses
 ```
 
 ---
 
-## Structure du projet (prévisionnel)
+## Structure du projet
 
 ```
 inkflow/
-├── client/                   # Frontend React
-│   ├── src/
-│   │   ├── components/       # Composants réutilisables
-│   │   ├── pages/            # Vues (Dashboard, Projet, Client)
-│   │   ├── services/         # Appels API (Axios)
-│   │   └── types/            # Types TypeScript
-│   └── ...
-├── server/                   # Backend Node.js
-│   ├── src/
-│   │   ├── routes/           # Routes Express
-│   │   ├── controllers/      # Logique métier
-│   │   ├── middlewares/      # Auth JWT, upload, validation
-│   │   ├── services/         # Nodemailer, Cron
-│   │   └── prisma/           # Schéma + migrations
-│   └── ...
-├── docker-compose.yml
-├── .env.example
-└── README.md
+├── client/                   # Front React
+│   └── src/
+│       ├── modules/          # public, auth, client, atelier
+│       ├── components/ui/    # Composants du kit graphique
+│       ├── request/          # Appels API (Axios)
+│       └── i18n/             # Textes de l'interface
+├── server/                   # API Express
+│   ├── prisma/               # Schéma, migrations, seed
+│   └── src/
+│       ├── routes/
+│       ├── controllers/
+│       ├── services/         # Logique métier
+│       ├── repositories/     # Accès aux données (Prisma)
+│       └── middlewares/      # Auth, validation, erreurs
+├── shared/                   # Code commun front / API
+├── .github/workflows/ci.yml
+└── docker-compose.yaml
 ```
 
 ---
