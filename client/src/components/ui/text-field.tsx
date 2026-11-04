@@ -18,7 +18,14 @@ export function TextField({ id, label, value, onChange, error, hint, multiline =
   const hintId = `${id}-hint`;
   const errorId = `${id}-error`;
   const describedBy = [hint && hintId, error && errorId].filter(Boolean).join(' ') || undefined;
-  const fieldProps = { id, value, 'aria-invalid': Boolean(error), 'aria-describedby': describedBy };
+  // Filled fields, as in the Figma kit
+  const fieldProps = {
+    id,
+    value,
+    className: 'bg-card dark:bg-card',
+    'aria-invalid': Boolean(error),
+    'aria-describedby': describedBy,
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -31,7 +38,12 @@ export function TextField({ id, label, value, onChange, error, hint, multiline =
       {multiline ? (
         <Textarea {...fieldProps} rows={6} onChange={(event) => onChange(event.target.value)} />
       ) : (
-        <Input {...fieldProps} {...inputProps} onChange={(event) => onChange(event.target.value)} />
+        <Input
+          {...fieldProps}
+          {...inputProps}
+          className="h-11 bg-card dark:bg-card"
+          onChange={(event) => onChange(event.target.value)}
+        />
       )}
       {error && (
         <p id={errorId} className="text-sm text-destructive">

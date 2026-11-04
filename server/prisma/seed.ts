@@ -18,14 +18,18 @@ async function main() {
     create: { email: 'ren@inkflow.dev', firstName: 'Ren', lastName: 'Matsuda', password, role: 'ARTIST' },
   });
 
+  const bio = 'Des pièces uniques, dessinées pour vous. Un dialogue direct avec Ren, de la première idée à la cicatrisation.';
+  // Development image served by the client (client/public/images)
+  const portrait = '/images/ren-atelier.jpg';
   const artist = await prisma.artist.upsert({
     where: { username: 'ren' },
-    update: {},
+    update: { bio, portrait },
     create: {
       username: 'ren',
       accountId: account.id,
       city: 'Lyon',
-      bio: 'Des pièces uniques, dessinées pour vous.',
+      bio,
+      portrait,
       workingSlots: ['TUE_PM', 'WED_PM', 'THU_PM', 'FRI_PM', 'SAT_AM', 'SAT_PM'],
     },
   });

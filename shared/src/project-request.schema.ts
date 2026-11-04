@@ -18,12 +18,14 @@ export const projectRequestSchema = z
     email: requiredText(255).pipe(z.email('invalid_email')),
     bodyArea: requiredText(100),
     size: requiredText(50),
-    tagIds: z.array(z.number().int().positive(), 'required').min(1, 'required'),
+    tagIds: z.array(z.number().int().positive()).default([]),
     budgetMin: budget.optional(),
     budgetMax: budget.optional(),
     description: requiredText(2000),
     availability: z.array(z.enum(AVAILABILITIES, 'invalid_availability')).default([]),
     flexibleSchedule: z.boolean().default(false),
+    // GDPR: the prospect agrees that the artist uses these details to study the request
+    consent: z.literal(true, 'consent_required'),
   })
   // Cross-field rules run as soon as the fields they use are valid,
   // so every error comes back in the same response

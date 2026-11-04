@@ -16,6 +16,7 @@ export async function createProjectRequest(username: string, request: ProjectReq
     throw new HttpError(400, 'validation_error', { availability: 'not_working_slot' });
   }
 
+  // Styles are optional; an empty list passes this check
   const tagIds = [...new Set(request.tagIds)];
   if ((await tagRepository.countByIds(tagIds)) !== tagIds.length) {
     throw new HttpError(400, 'validation_error', { tagIds: 'unknown_tag' });

@@ -1,62 +1,154 @@
-import { useParams } from 'react-router';
+import { useState, type FormEvent } from 'react';
+import { flushSync } from 'react-dom';
+import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { ArrowRight } from 'lucide-react';
+import { projectRequestSchema, validate, type FieldErrors } from '@inkflow/shared';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { getProblem } from '@/request/http';
-import { ProjectRequestForm } from '../components/ProjectRequestForm';
+import { ArtistQueryState } from '../components/ArtistQueryState';
+import { PublicPage } from '../components/PublicPage';
+import { StepLayout } from '../components/StepLayout';
 import { useArtist } from '../hooks/useArtist';
-import { NotFoundPage } from './NotFoundPage';
+import { useCreateProjectRequest } from '../hooks/useCreateProjectRequest';
+import {
+  byField,
+  clearErrors,
+  emptyForm,
+  errorsUpToStep,
+  firstStepWithError,
+  STEPS,
+  toRequest,
+  type FormValues,
+} from '../project-request-form';
+import { ContactStep } from '../steps/ContactStep';
+import { ProjectStep } from '../steps/ProjectStep';
+import { RequestSent } from '../steps/RequestSent';
+import { ReviewStep } from '../steps/ReviewStep';
 
 export function ProjectRequestPage() {
   const { username = '' } = useParams();
   const { t } = useTranslation();
-  const artist = useArtist(username);
+  const query = useArtist(username);
+  const createRequest = useCreateProjectRequest(username);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [values, setValues] = useState<FormValues>(emptyForm);
+  const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (artist.isPending) {
+  if (!query.isSuccess) return <ArtistQueryState query={query} />;
+
+  const artist = query.data;
+  const step = STEPS[stepIndex];
+  const isLastStep = stepIndex === STEPS.length - 1;
+
+  function update(patch: Partial<FormValues>) {
+    setValues({ ...values, ...patch });
+    setErrors(clearErrors(errors, patch));
+  }
+  const errorText = (field: string) => (errors[field] ? t(`errors.${errors[field]}`) : undefined);
+
+  function showErrors(fieldErrors: FieldErrors) {
+    // Go back to the first step with an error, render it, then focus the first invalid field
+    const target = firstStepWithError(fieldErrors);
+    flushSync(() => {
+      setErrors(fieldErrors);
+      if (target >= 0) setStepIndex(target);
+    });
+    document.querySelector<HTMLElement>('main [aria-invalid="true"]')?.focus();
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    // The whole schema is checked; only the fields of the steps reached so far must be valid
+    const result = validate(projectRequestSchema, toRequest(values));
+    const blocking = result.success ? {} : errorsUpToStep(byField(result.errors), stepIndex);
+
+    if (Object.keys(blocking).length > 0) {
+      showErrors(blocking);
+      return;
+    }
+    setErrors({});
+    if (!isLastStep) {
+      setStepIndex(stepIndex + 1);
+      return;
+    }
+    if (result.success) {
+      createRequest.mutate(result.data, {
+        onError: (error) => {
+          const fieldErrors = getProblem(error)?.errors;
+          if (fieldErrors) showErrors(byField(fieldErrors));
+        },
+      });
+    }
+  }
+
+  if (createRequest.isSuccess) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-16">
-        <p role="status">{t('common.loading')}</p>
-      </main>
+      <PublicPage artist={artist}>
+        <RequestSent artist={artist} values={values} project={createRequest.data} />
+      </PublicPage>
     );
   }
 
-  if (artist.isError) {
-    if (getProblem(artist.error)?.status === 404) return <NotFoundPage />;
-    return (
-      <main className="mx-auto max-w-2xl px-4 py-16">
-        <p role="alert">{t('common.genericError')}</p>
-      </main>
-    );
-  }
-
-  const { firstName, lastName, city, bio, specialties } = artist.data;
+  const stepProps = { artist, values, errors, errorText, update };
+  let submitLabel = t('common.continue');
+  if (isLastStep) submitLabel = createRequest.isPending ? t('request.review.sending') : t('request.review.submit');
+  const hasServerError = createRequest.isError && !getProblem(createRequest.error)?.errors;
 
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-12 px-4 py-12">
-      <header className="flex flex-col gap-3">
-        {city && <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">{city}</p>}
-        <h1 className="font-serif text-5xl">
-          {firstName} {lastName}
-        </h1>
-        {bio && <p className="text-muted-foreground">{bio}</p>}
-        {specialties.length > 0 && (
-          <ul aria-label={t('projectRequest.specialties')} className="flex flex-wrap gap-2">
-            {specialties.map((tag) => (
-              <li key={tag.id} className="rounded-full bg-card px-3 py-1 text-sm">
-                {tag.name}
-              </li>
-            ))}
-          </ul>
-        )}
-      </header>
+    <PublicPage artist={artist}>
+      <StepLayout
+        key={step}
+        stepIndex={stepIndex}
+        title={t(`request.${step}.title`)}
+        intro={t(`request.${step}.intro`, { name: artist.firstName })}
+        aside={
+          step === 'contact' && (
+            <div className="mt-6 hidden flex-col gap-2 lg:flex">
+              <p className="font-serif text-3xl">{t('request.contact.asideTitle')}</p>
+              <p className="text-sm text-muted-foreground">{t('request.contact.asideText')}</p>
+            </div>
+          )
+        }
+      >
+        <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-6">
+          {step === 'project' && <ProjectStep {...stepProps} />}
+          {step === 'contact' && <ContactStep {...stepProps} />}
+          {step === 'review' && <ReviewStep {...stepProps} />}
 
-      <section aria-labelledby="request-title" className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h2 id="request-title" className="font-serif text-4xl">
-            {t('projectRequest.title')}
-          </h2>
-          <p className="text-muted-foreground">{t('projectRequest.intro')}</p>
-        </div>
-        <ProjectRequestForm artist={artist.data} />
-      </section>
-    </main>
+          {step !== 'review' && <p className="text-xs text-muted-foreground">{t('request.requiredNote')}</p>}
+          {hasServerError && (
+            <p role="alert" className="text-sm text-destructive">
+              {t('common.genericError')}
+            </p>
+          )}
+
+          <div className="flex gap-3">
+            {stepIndex === 0 ? (
+              <Link
+                to={`/${artist.username}`}
+                className={buttonVariants({ variant: 'secondary', size: 'lg', className: 'h-11 px-5' })}
+              >
+                {t('common.back')}
+              </Link>
+            ) : (
+              <Button
+                type="button"
+                variant="secondary"
+                size="lg"
+                className="h-11 px-5"
+                onClick={() => setStepIndex(isLastStep ? 0 : stepIndex - 1)}
+              >
+                {isLastStep ? t('request.review.edit') : t('common.back')}
+              </Button>
+            )}
+            <Button type="submit" size="lg" className="h-11 flex-1" disabled={createRequest.isPending}>
+              {submitLabel}
+              <ArrowRight aria-hidden="true" />
+            </Button>
+          </div>
+        </form>
+      </StepLayout>
+    </PublicPage>
   );
 }

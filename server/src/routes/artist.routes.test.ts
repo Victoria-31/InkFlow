@@ -21,6 +21,7 @@ const validRequest = () => ({
   description: 'Un ensō avec quelques tiges de bambou.',
   availability: ['TUE_PM'],
   flexibleSchedule: false,
+  consent: true,
 });
 
 const countProjects = () => prisma.project.count({ where: { artistId } });
@@ -98,9 +99,9 @@ describe('POST /api/artists/:username/projects', () => {
       email: 'required',
       bodyArea: 'required',
       size: 'required',
-      tagIds: 'required',
       description: 'required',
       availability: 'availability_required',
+      consent: 'consent_required',
     });
     expect(await countProjects()).toBe(0);
   });
@@ -112,6 +113,24 @@ describe('POST /api/artists/:username/projects', () => {
 
     expect(res.status).toBe(400);
     expect(res.body.errors.email).toBe('invalid_email');
+  });
+
+  it('accepts a request without style', async () => {
+    const res = await request(app)
+      .post(`/api/artists/${username}/projects`)
+      .send({ ...validRequest(), tagIds: [] });
+
+    expect(res.status).toBe(201);
+  });
+
+  it('requires the consent to be given', async () => {
+    const res = await request(app)
+      .post(`/api/artists/${username}/projects`)
+      .send({ ...validRequest(), consent: false });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors.consent).toBe('consent_required');
+    expect(await countProjects()).toBe(0);
   });
 
   it('accepts a request without budget', async () => {
