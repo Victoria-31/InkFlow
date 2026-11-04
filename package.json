@@ -9,7 +9,8 @@
     "test": "pnpm -r test",
     "migrate": "pnpm --filter @inkflow/server prisma:migrate",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "studio": "pnpm --filter @inkflow/server prisma:studio"
   },
   "devDependencies": {
     "prettier": "^3.9.10",
