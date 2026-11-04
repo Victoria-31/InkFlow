@@ -67,7 +67,7 @@ export function ArtistPage() {
             </ol>
           </section>
 
-          <Link to={`/${artist.username}/demande`} className={buttonVariants({ size: 'lg', className: 'h-11' })}>
+          <Link to={`/${artist.username}/request`} className={buttonVariants({ size: 'lg', className: 'h-11' })}>
             {t('artist.cta')} <ArrowRight aria-hidden="true" />
           </Link>
           <p className="text-center text-xs text-muted-foreground lg:text-left">{t('artist.ctaNote')}</p>

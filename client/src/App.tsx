@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Routes>
       <Route path=":username" element={<ArtistPage />} />
-      <Route path=":username/demande" element={<ProjectRequestPage />} />
+      <Route path=":username/request" element={<ProjectRequestPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

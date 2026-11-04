@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useFocusOnMount } from '@/hooks/useFocusOnMount';
 import type { CreatedProjectRequest, PublicArtist } from '@inkflow/shared';
 import { buttonVariants } from '@/components/ui/button';
 import type { FormValues } from '../project-request-form';
@@ -10,6 +11,7 @@ const longDate = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long
 
 export function RequestSent({ artist, values, project }: RequestSentProps) {
   const { t } = useTranslation();
+  const headingRef = useFocusOnMount<HTMLHeadingElement>();
   const name = artist.firstName;
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
 
@@ -19,7 +21,7 @@ export function RequestSent({ artist, values, project }: RequestSentProps) {
         <p className="text-[11px] font-semibold tracking-[0.16em] text-muted-foreground uppercase">
           {t('request.sent.reference', { id: String(project.id).padStart(3, '0'), date: longDate.format(new Date()) })}
         </p>
-        <h1 ref={(heading) => heading?.focus()} tabIndex={-1} className="font-serif text-4xl outline-none sm:text-5xl">
+        <h1 ref={headingRef} tabIndex={-1} className="font-serif text-4xl outline-none sm:text-5xl">
           {t('request.sent.title')}
         </h1>
         <p role="status" className="text-sm text-muted-foreground">

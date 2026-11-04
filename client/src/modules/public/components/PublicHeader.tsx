@@ -14,7 +14,7 @@ export function PublicHeader({ artist }: { artist: PublicArtist }) {
       </Link>
       <div className="flex flex-col items-end gap-1 text-[11px] tracking-wider text-muted-foreground uppercase">
         <p>{t('header.studio', { name: artist.firstName, city: artist.city })}</p>
-        <Link to="/connexion" className="underline underline-offset-2 hover:text-foreground">
+        <Link to="/login" className="underline underline-offset-2 hover:text-foreground">
           {t('header.clientSpace')}
         </Link>
       </div>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useFocusOnMount } from '@/hooks/useFocusOnMount';
 import { STEPS } from '../project-request-form';
 
 type StepLayoutProps = {
@@ -13,6 +14,7 @@ type StepLayoutProps = {
 // Title on the left, form on the right (stacked on mobile), with the progress bar
 export function StepLayout({ stepIndex, title, intro, aside, children }: StepLayoutProps) {
   const { t } = useTranslation();
+  const headingRef = useFocusOnMount<HTMLHeadingElement>();
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-16">
@@ -20,8 +22,7 @@ export function StepLayout({ stepIndex, title, intro, aside, children }: StepLay
         <p className="text-[11px] font-semibold tracking-[0.16em] text-muted-foreground uppercase">
           {t('request.step', { current: stepIndex + 1, total: STEPS.length })}
         </p>
-        {/* Focused when the step changes, so screen readers announce the new step */}
-        <h1 ref={(heading) => heading?.focus()} tabIndex={-1} className="font-serif text-4xl outline-none sm:text-5xl">
+        <h1 ref={headingRef} tabIndex={-1} className="font-serif text-4xl outline-none sm:text-5xl">
           {title}
         </h1>
         <p className="text-sm text-muted-foreground">{intro}</p>
