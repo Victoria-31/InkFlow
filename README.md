@@ -18,21 +18,23 @@ Plateforme SaaS de gestion de projets tatouage, dédiée aux tatoueurs indépend
 
 ## Cible utilisateur
 
-| Profil | Description | Priorité |
-|---|---|---|
-| **Tatoueur indépendant** | Gère seul sa clientèle, sans structure autour | ⭐ MVP V1 |
-| **Tatoueur en salon** | Autonome sur ses projets au sein d'une structure | V1 |
-| **Location de poste (guest)** | Très mobile, jongle entre plusieurs studios | V1 |
-| **Gérant de salon** | Supervise plusieurs tatoueurs | V2 |
+| Profil                        | Description                                      | Priorité  |
+| ----------------------------- | ------------------------------------------------ | --------- |
+| **Tatoueur indépendant**      | Gère seul sa clientèle, sans structure autour    | ⭐ MVP V1 |
+| **Tatoueur en salon**         | Autonome sur ses projets au sein d'une structure | V1        |
+| **Location de poste (guest)** | Très mobile, jongle entre plusieurs studios      | V1        |
+| **Gérant de salon**           | Supervise plusieurs tatoueurs                    | V2        |
 
 ---
 
 ## Fonctionnalités
 
 ### Fonctionnalité principale — Optimisation de l'agenda
+
 Planification des RDV avec estimation de durée selon le projet, détection des conflits d'agenda, créneaux suggérés et rappels automatiques.
 
 ### Fonctionnalités secondaires
+
 - **Pipeline de projet** — Suivi Kanban de la demande à la réalisation (9 étapes)
 - **Moodboard d'inspirations** — Centralisation des références visuelles par projet avec tags
 - **Validation de dessin** — Soumission d'esquisses versionnées, validation ou révision par le client
@@ -42,6 +44,7 @@ Planification des RDV avec estimation de durée selon le projet, détection des 
 - **Notifications** — Alertes RDV, dessin en attente, retouche à planifier
 
 ### Fonctionnalités V2 (roadmap)
+
 - Suggestion de tags par IA sur les inspirations
 - Banque d'inspiration partagée (communauté + perso)
 - Intégrations : Stripe · WhatsApp · Instagram DM
@@ -72,17 +75,16 @@ Planification des RDV avec estimation de durée selon le projet, détection des 
 09 Retouche / Archive            ← V2
 ```
 
-
 ## Wireframe / zooning
- 
+
 Les maquettes exploratoires sont disponibles sur Figma :
- 
-| Écran | Description |
-|---|---|
+
+| Écran                 | Description                                       |
+| --------------------- | ------------------------------------------------- |
 | **Dashboard artiste** | Vue Kanban — Demandes · Devis · Création · Validé |
-| **Espace client** | Statut projet · Dessin · RDV · Conseils |
-| **Détail projet** | Informations · Propositions · Moodboard |
- 
+| **Espace client**     | Statut projet · Dessin · RDV · Conseils           |
+| **Détail projet**     | Informations · Propositions · Moodboard           |
+
 > 🔗 **Fichier Figma complet :** *https://www.figma.com/design/ehDohqkbB5Eh2lsrHNEC0O/InkFlow?node-id=0-1&t=CpYmOpnMoSWAgvwe-1*
 
 ---
@@ -92,43 +94,48 @@ Les maquettes exploratoires sont disponibles sur Figma :
 Monorepo **pnpm** (workspaces) en **TypeScript** : `client/`, `server/` et `shared/` (types, schémas de validation et transitions de statut communs au front et à l'API).
 
 ### Frontend
-| Technologie | Rôle |
-|---|---|
-| React 19 + Vite | SPA, serveur de dev avec proxy vers l'API |
-| Tailwind CSS 4 | Charte graphique déclarée dans `@theme` |
-| React Router | Navigation par modules (public, auth, client, atelier) |
-| Axios | Requêtes HTTP (`client/src/request/`) |
-| react-i18next | Textes de l'interface (`client/src/i18n/fr.json`) |
+
+| Technologie     | Rôle                                                   |
+| --------------- | ------------------------------------------------------ |
+| React 19 + Vite | SPA, serveur de dev avec proxy vers l'API              |
+| Tailwind CSS 4  | Charte graphique déclarée dans `@theme`                |
+| React Router    | Navigation par modules (public, auth, client, atelier) |
+| Axios           | Requêtes HTTP (`client/src/request/`)                  |
+| react-i18next   | Textes de l'interface (`client/src/i18n/fr.json`)      |
 
 ### Backend
-| Technologie | Rôle |
-|---|---|
-| Node.js 22 + Express 5 | API REST en couches : routes → controllers → services → repositories |
-| Zod | Validation des données, schémas partagés avec le front |
-| JWT (cookie httpOnly) + Argon2 | Authentification et rôles tatoueur / client |
-| sharp | Aperçus d'esquisse basse définition avec filigrane |
-| Nodemailer (Brevo) | Emails : invitation, devis, conseils |
+
+| Technologie                    | Rôle                                                                 |
+| ------------------------------ | -------------------------------------------------------------------- |
+| Node.js 22 + Express 5         | API REST en couches : routes → controllers → services → repositories |
+| Zod                            | Validation des données, schémas partagés avec le front               |
+| JWT (cookie httpOnly) + Argon2 | Authentification et rôles tatoueur / client                          |
+| sharp                          | Aperçus d'esquisse basse définition avec filigrane                   |
+| Nodemailer (Brevo)             | Emails : invitation, devis, conseils                                 |
 
 ### Base de données
-| Technologie | Rôle |
-|---|---|
+
+| Technologie   | Rôle                                       |
+| ------------- | ------------------------------------------ |
 | PostgreSQL 17 | Base relationnelle, issue du modèle Merise |
-| Prisma 6 | Schéma, migrations versionnées, seed |
+| Prisma 6      | Schéma, migrations versionnées, seed       |
 
 ### Qualité
-| Technologie | Rôle |
-|---|---|
-| Vitest + Supertest | Tests de l'API |
-| ESLint | Lint du front |
-| GitHub Actions | CI : lint, build et tests à chaque pull request |
+
+| Technologie        | Rôle                                            |
+| ------------------ | ----------------------------------------------- |
+| Vitest + Supertest | Tests de l'API                                  |
+| ESLint             | Lint du front                                   |
+| GitHub Actions     | CI : lint, build et tests à chaque pull request |
 
 ### Déploiement (prévu)
-| Technologie | Rôle |
-|---|---|
-| Vercel | Front |
-| Render | API |
-| PostgreSQL managé | Base de production |
-| Docker | Base PostgreSQL en développement |
+
+| Technologie       | Rôle                             |
+| ----------------- | -------------------------------- |
+| Vercel            | Front                            |
+| Render            | API                              |
+| PostgreSQL managé | Base de production               |
+| Docker            | Base PostgreSQL en développement |
 
 ---
 
@@ -145,12 +152,12 @@ pnpm --filter @inkflow/server db:seed                 # données de démonstrati
 pnpm dev                                              # front (5173), API (3000), shared
 ```
 
-| Commande | Rôle |
-|---|---|
-| `pnpm dev` | Lance le front, l'API et la compilation de `shared` |
-| `pnpm lint` | Lint de tous les packages |
-| `pnpm build` | Build de tous les packages |
-| `pnpm test` | Tests de tous les packages |
+| Commande     | Rôle                                                |
+| ------------ | --------------------------------------------------- |
+| `pnpm dev`   | Lance le front, l'API et la compilation de `shared` |
+| `pnpm lint`  | Lint de tous les packages                           |
+| `pnpm build` | Build de tous les packages                          |
+| `pnpm test`  | Tests de tous les packages                          |
 
 ---
 
@@ -216,9 +223,9 @@ inkflow/
 
 ## Informations projet
 
-| | |
-|---|---|
-| **Projet** | CDA 2025 / 2027 — Simplon |
-| **Auteure** | Victoria Fonteny |
+|               |                                       |
+| ------------- | ------------------------------------- |
+| **Projet**    | CDA 2025 / 2027 — Simplon             |
+| **Auteure**   | Victoria Fonteny                      |
 | **Formation** | Concepteur Développeur d'Applications |
-| **Statut** | En cours de développement |
+| **Statut**    | En cours de développement             |

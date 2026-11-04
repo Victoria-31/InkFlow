@@ -11,8 +11,8 @@ async function main() {
   }
 
   // Development-only credentials
-const password = await argon2.hash('inkflow-dev'); // argon2id by default
-   const account = await prisma.account.upsert({
+  const password = await argon2.hash('inkflow-dev'); // argon2id by default
+  const account = await prisma.account.upsert({
     where: { email: 'ren@inkflow.dev' },
     update: {},
     create: { email: 'ren@inkflow.dev', firstName: 'Ren', lastName: 'Matsuda', password, role: 'ARTIST' },
