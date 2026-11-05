@@ -47,10 +47,14 @@ export function RequestSent({ artist, values, project }: RequestSentProps) {
           <h2 id="next-steps" className="eyebrow">
             {t('request.sent.nextTitle')}
           </h2>
-          <ol className="flex flex-col gap-2 text-body">
+          <ol className="flex flex-col gap-4">
             {[1, 2, 3].map((number) => (
-              <li key={number}>
-                <span className="font-serif text-primary-light">0{number}</span> — {t(`request.sent.next.${number}`, { name })}
+              <li key={number} className="flex items-center gap-4">
+                {/* The list already announces the order: the big number is only visual */}
+                <span aria-hidden="true" className="w-12 shrink-0 page-title leading-none text-primary-light">
+                  0{number}
+                </span>
+                <p className="text-body">{t(`request.sent.next.${number}`, { name })}</p>
               </li>
             ))}
           </ol>

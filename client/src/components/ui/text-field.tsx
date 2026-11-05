@@ -10,6 +10,8 @@ type TextFieldProps = {
   onChange: (value: string) => void;
   error?: string;
   hint?: string;
+  // Sub-label inside a group (fieldset): lighter than the group legend
+  secondary?: boolean;
   multiline?: boolean;
   // Shows a character counter under the field
   maxLength?: number;
@@ -25,6 +27,7 @@ export function TextField({
   onChange,
   error,
   hint,
+  secondary = false,
   multiline = false,
   maxLength,
   ...inputProps
@@ -47,7 +50,9 @@ export function TextField({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className={secondary ? 'font-normal text-muted-foreground' : undefined}>
+        {label}
+      </Label>
       {hint && (
         <p id={hintId} className="text-small text-muted-foreground">
           {hint}

@@ -35,7 +35,7 @@
       }
     },
     "cta": "Parlons de votre tatouage",
-    "ctaNote": "Sans engagement · Réponse sous 3 jours ouvrés"
+    "ctaNote": "Sans engagement"
   },
   "request": {
     "step": "Votre demande / {{current}} sur {{total}}",
@@ -48,8 +48,9 @@
       "size": "Taille approximative",
       "sizePlaceholder": "18 cm",
       "styles": "Styles · facultatif, plusieurs choix",
-      "budgetMin": "Budget min (€) · facultatif",
-      "budgetMax": "Budget max (€) · facultatif",
+      "budget": "Budget (€) · facultatif",
+      "budgetMin": "Minimum",
+      "budgetMax": "Maximum",
       "description": "Description",
       "descriptionPlaceholder": "Motif, ambiance, couleurs…",
       "availability": "Vos disponibilités",

@@ -11,62 +11,70 @@ import type { StepProps } from './types';
 export function ProjectStep({ artist, values, errors, errorText, update }: StepProps) {
   const { t } = useTranslation();
 
+  // Fields are grouped (the tattoo, budget, idea, availability): more space between groups than inside them
   return (
-    <>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <TextField
-          id="bodyArea"
-          label={`${t('request.project.bodyArea')} *`}
-          placeholder={t('request.project.bodyAreaPlaceholder')}
-          value={values.bodyArea}
-          onChange={(value) => update({ bodyArea: value })}
-          error={errorText('bodyArea')}
-        />
-        <TextField
-          id="size"
-          label={`${t('request.project.size')} *`}
-          placeholder={t('request.project.sizePlaceholder')}
-          value={values.size}
-          onChange={(value) => update({ size: value })}
-          error={errorText('size')}
-        />
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TextField
+            id="bodyArea"
+            label={`${t('request.project.bodyArea')} *`}
+            placeholder={t('request.project.bodyAreaPlaceholder')}
+            value={values.bodyArea}
+            onChange={(value) => update({ bodyArea: value })}
+            error={errorText('bodyArea')}
+          />
+          <TextField
+            id="size"
+            label={`${t('request.project.size')} *`}
+            placeholder={t('request.project.sizePlaceholder')}
+            value={values.size}
+            onChange={(value) => update({ size: value })}
+            error={errorText('size')}
+          />
+        </div>
+
+        <fieldset aria-describedby={errors.tagIds ? 'tagIds-error' : undefined} className="flex flex-col gap-2">
+          <legend className="mb-2 text-body font-medium">{t('request.project.styles')}</legend>
+          <ul className="flex flex-wrap gap-2">
+            {artist.styles.map((style) => (
+              <li key={style.id}>
+                <ChoicePill
+                  label={style.name}
+                  checked={values.tagIds.includes(style.id)}
+                  onChange={() => update({ tagIds: toggle(values.tagIds, style.id) })}
+                  invalid={Boolean(errors.tagIds)}
+                />
+              </li>
+            ))}
+          </ul>
+          <FieldError id="tagIds-error" message={errorText('tagIds')} />
+        </fieldset>
       </div>
 
-      <fieldset aria-describedby={errors.tagIds ? 'tagIds-error' : undefined} className="flex flex-col gap-2">
-        <legend className="mb-2 text-body font-medium">{t('request.project.styles')}</legend>
-        <ul className="flex flex-wrap gap-2">
-          {artist.styles.map((style) => (
-            <li key={style.id}>
-              <ChoicePill
-                label={style.name}
-                checked={values.tagIds.includes(style.id)}
-                onChange={() => update({ tagIds: toggle(values.tagIds, style.id) })}
-                invalid={Boolean(errors.tagIds)}
-              />
-            </li>
-          ))}
-        </ul>
-        <FieldError id="tagIds-error" message={errorText('tagIds')} />
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 text-body font-medium">{t('request.project.budget')}</legend>
+        <div className="grid grid-cols-2 gap-4">
+          <TextField
+            id="budgetMin"
+            secondary
+            inputMode="numeric"
+            label={t('request.project.budgetMin')}
+            value={values.budgetMin}
+            onChange={(value) => update({ budgetMin: value })}
+            error={errorText('budgetMin')}
+          />
+          <TextField
+            id="budgetMax"
+            secondary
+            inputMode="numeric"
+            label={t('request.project.budgetMax')}
+            value={values.budgetMax}
+            onChange={(value) => update({ budgetMax: value })}
+            error={errorText('budgetMax')}
+          />
+        </div>
       </fieldset>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <TextField
-          id="budgetMin"
-          inputMode="numeric"
-          label={t('request.project.budgetMin')}
-          value={values.budgetMin}
-          onChange={(value) => update({ budgetMin: value })}
-          error={errorText('budgetMin')}
-        />
-        <TextField
-          id="budgetMax"
-          inputMode="numeric"
-          label={t('request.project.budgetMax')}
-          value={values.budgetMax}
-          onChange={(value) => update({ budgetMax: value })}
-          error={errorText('budgetMax')}
-        />
-      </div>
 
       <TextField
         id="description"
@@ -99,6 +107,6 @@ export function ProjectStep({ artist, values, errors, errorText, update }: StepP
         </Label>
         <FieldError id="availability-error" message={errorText('availability')} />
       </fieldset>
-    </>
+    </div>
   );
 }
