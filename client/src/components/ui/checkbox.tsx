@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react';
 import { cn } from 'cn';
 
-// Native checkbox: keyboard, screen readers and form behaviour come from the browser
 function Checkbox({ className, ...props }: ComponentProps<'input'>) {
   return (
     <input

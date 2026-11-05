@@ -7,8 +7,6 @@ type ChoicePillProps = {
   invalid?: boolean;
 };
 
-// Multiple-choice option shown as a pill. The native checkbox stays focusable for keyboards
-// and screen readers; the state is shown by the border, the background AND a check mark (not by color alone).
 export function ChoicePill({ label, checked, onChange, invalid = false }: ChoicePillProps) {
   return (
     <label className="cursor-pointer">
