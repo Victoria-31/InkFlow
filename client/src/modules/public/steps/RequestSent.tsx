@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useFocusOnMount } from '@/hooks/useFocusOnMount';
+import { useNewScreen } from '@/hooks/useNewScreen';
 import type { CreatedProjectRequest, PublicArtist } from '@inkflow/shared';
 import { buttonVariants } from '@/components/ui/button';
 import { KoiIllustration } from '../components/KoiIllustration';
@@ -12,7 +12,7 @@ const longDate = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long
 
 export function RequestSent({ artist, values, project }: RequestSentProps) {
   const { t } = useTranslation();
-  const headingRef = useFocusOnMount<HTMLHeadingElement>();
+  const headingRef = useNewScreen<HTMLHeadingElement>();
   const name = artist.firstName;
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
 

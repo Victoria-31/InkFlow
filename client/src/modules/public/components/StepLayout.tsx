@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFocusOnMount } from '@/hooks/useFocusOnMount';
+import { useNewScreen } from '@/hooks/useNewScreen';
 import { STEPS } from '../project-request-form';
 import type { PublicArtist } from '@inkflow/shared';
 import { ArtistReminder } from './ArtistReminder';
@@ -18,7 +18,7 @@ type StepLayoutProps = {
 // Title on the left, form on the right (stacked on mobile), with the progress bar
 export function StepLayout({ artist, stepIndex, title, intro, aside, children }: StepLayoutProps) {
   const { t } = useTranslation();
-  const headingRef = useFocusOnMount<HTMLHeadingElement>();
+  const headingRef = useNewScreen<HTMLHeadingElement>();
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-16">
