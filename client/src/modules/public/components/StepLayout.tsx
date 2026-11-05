@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNewScreen } from '@/hooks/useNewScreen';
 import { STEPS } from '../project-request-form';
 import type { PublicArtist } from '@inkflow/shared';
-import { ArtistReminder } from './ArtistReminder';
+import { ArtistSummaryCard } from './ArtistSummaryCard';
 import { KoiIllustration } from './KoiIllustration';
 
 type StepLayoutProps = {
@@ -32,7 +32,7 @@ export function StepLayout({ artist, stepIndex, title, intro, aside, children }:
           </h1>
           {intro && <p className="text-body text-muted-foreground">{intro}</p>}
           {aside}
-          <ArtistReminder artist={artist} />
+          <ArtistSummaryCard artist={artist} />
         </div>
         <div className="hidden lg:block lg:flex-[3]" />
         <KoiIllustration />

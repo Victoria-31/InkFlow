@@ -17,6 +17,7 @@ import {
   emptyForm,
   errorsUpToStep,
   firstStepWithError,
+  keepAvailableChoices,
   STEPS,
   toRequest,
   type FormValues,
@@ -32,18 +33,24 @@ export function ProjectRequestPage() {
   const query = useArtist(username);
   const createRequest = useCreateProjectRequest(username);
   const [stepIndex, setStepIndex] = useState(0);
-  const [values, setValues] = useState<FormValues>(emptyForm);
+  const [enteredValues, setValues] = useState<FormValues>(emptyForm);
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (!query.isSuccess) return <ArtistQueryState query={query} />;
+  if (!query.data) return <ArtistQueryState query={query} />;
 
   const artist = query.data;
+  const values = keepAvailableChoices(enteredValues, artist);
   const step = STEPS[stepIndex];
   const isLastStep = stepIndex === STEPS.length - 1;
 
   function update(patch: Partial<FormValues>) {
     setValues({ ...values, ...patch });
     setErrors(clearErrors(errors, patch));
+  }
+
+  function goBack() {
+    createRequest.reset();
+    setStepIndex(isLastStep ? 0 : stepIndex - 1);
   }
   const errorText = (field: string) => (errors[field] ? t(`errors.${errors[field]}`) : undefined);
 
@@ -130,7 +137,7 @@ export function ProjectRequestPage() {
                 {t('common.back')}
               </Link>
             ) : (
-              <Button type="button" variant="secondary" size="lg" onClick={() => setStepIndex(isLastStep ? 0 : stepIndex - 1)}>
+              <Button type="button" variant="secondary" size="lg" disabled={createRequest.isPending} onClick={goBack}>
                 {isLastStep ? t('request.review.edit') : t('common.back')}
               </Button>
             )}

@@ -6,7 +6,7 @@
     "continue": "Continuer"
   },
   "header": {
-    "studio": "Atelier {{name}} • {{city}}",
+    "studio": "Atelier {{name}}",
     "clientSpace": "Espace client"
   },
   "notFound": {
@@ -75,6 +75,8 @@
       "bodyArea": "Emplacement",
       "styles": "Styles",
       "budget": "Budget",
+      "budgetFrom": "À partir de {{amount}}",
+      "budgetUpTo": "Jusqu’à {{amount}}",
       "availability": "Disponibilités",
       "none": "Non précisé",
       "flexible": "Emploi du temps variable",

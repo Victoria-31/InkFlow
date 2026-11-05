@@ -7,16 +7,17 @@ const HALF_DAYS = ['AM', 'PM'];
 
 type AvailabilityGridProps = {
   workingSlots: Availability[];
-  value: Availability[];
+  selectedSlots: Availability[];
   onToggle: (slot: Availability) => void;
   invalid: boolean;
 };
 
 // Calendar-like table: one column per working day, one row per half-day.
 // Half-days when the studio is closed are shown but cannot be chosen.
-export function AvailabilityGrid({ workingSlots, value, onToggle, invalid }: AvailabilityGridProps) {
+export function AvailabilityGrid({ workingSlots, selectedSlots, onToggle, invalid }: AvailabilityGridProps) {
   const { t } = useTranslation();
-  const workingDays = DAYS.filter((day) => workingSlots.some((slot) => slot.startsWith(day)));
+  const isWorkingDay = (day: string) => workingSlots.some((slot) => slot.startsWith(day));
+  const workingDays = DAYS.filter(isWorkingDay);
 
   return (
     <table className="w-full table-fixed border-separate border-spacing-2">
@@ -47,7 +48,7 @@ export function AvailabilityGrid({ workingSlots, value, onToggle, invalid }: Ava
                   </td>
                 );
               }
-              const checked = value.includes(slot);
+              const checked = selectedSlots.includes(slot);
               return (
                 <td key={slot}>
                   <label className="block cursor-pointer">

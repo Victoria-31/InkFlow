@@ -11,7 +11,7 @@ export function ArtistPage() {
   const { t } = useTranslation();
   const query = useArtist(username);
 
-  if (!query.isSuccess) return <ArtistQueryState query={query} />;
+  if (!query.data) return <ArtistQueryState query={query} />;
 
   const artist = query.data;
   const fullName = `${artist.firstName} ${artist.lastName}`;
@@ -19,19 +19,17 @@ export function ArtistPage() {
   return (
     <PublicPage artist={artist}>
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16 lg:pt-8">
-        <div className="relative overflow-hidden rounded-xl bg-card">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-card sm:aspect-square">
           {artist.portrait && (
             <img
               src={artist.portrait}
               alt={t('artist.photoAlt', { name: artist.firstName })}
-              className="aspect-[4/5] w-full object-cover sm:aspect-square"
+              className="size-full object-cover"
             />
           )}
           {/* Gradient so the title stays readable on the photo */}
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-linear-to-t from-background via-background/80 to-transparent p-6 pt-24 sm:p-8">
-            <p className="eyebrow">
-              {fullName} / {artist.city}
-            </p>
+            <p className="eyebrow">{[fullName, artist.city].filter(Boolean).join(' / ')}</p>
             <h1 className="page-title">{t('artist.tagline')}</h1>
           </div>
         </div>

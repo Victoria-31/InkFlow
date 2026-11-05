@@ -1,4 +1,4 @@
-import type { Availability, FieldErrors, ProjectRequestInput } from '@inkflow/shared';
+import type { Availability, FieldErrors, ProjectRequestInput, PublicArtist } from '@inkflow/shared';
 
 // Form values as typed by the user: budgets stay strings until submission
 export type FormValues = Omit<ProjectRequestInput, 'budgetMin' | 'budgetMax' | 'consent'> & {
@@ -34,6 +34,17 @@ export const STEP_FIELDS: Record<Step, string[]> = {
   contact: ['firstName', 'lastName', 'email'],
   review: ['consent'],
 };
+
+// The artist can change their slots or styles while the form is open: a removed choice
+// could no longer be unticked and the API would reject the request
+export function keepAvailableChoices(values: FormValues, artist: PublicArtist) {
+  const styleIds = artist.styles.map((style) => style.id);
+  return {
+    ...values,
+    availability: values.availability.filter((slot) => artist.workingSlots.includes(slot)),
+    tagIds: values.tagIds.filter((id) => styleIds.includes(id)),
+  };
+}
 
 // An empty budget field means "no budget"
 function toAmount(value: string) {

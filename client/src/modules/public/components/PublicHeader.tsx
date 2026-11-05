@@ -14,7 +14,7 @@ export function PublicHeader({ artist }: { artist: PublicArtist }) {
         <span className="font-serif text-title">InkFlow</span>
       </Link>
       <div className="flex flex-col items-end gap-1 text-small tracking-wider text-muted-foreground uppercase">
-        <p>{t('header.studio', { name: artist.firstName, city: artist.city })}</p>
+        <p>{[t('header.studio', { name: artist.firstName }), artist.city].filter(Boolean).join(' • ')}</p>
         <Link to="/login" className="underline underline-offset-2 hover:text-foreground">
           {t('header.clientSpace')}
         </Link>

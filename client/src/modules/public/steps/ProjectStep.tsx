@@ -11,7 +11,6 @@ import type { StepProps } from './types';
 export function ProjectStep({ artist, values, errors, errorText, update }: StepProps) {
   const { t } = useTranslation();
 
-  // Fields are grouped (the tattoo, budget, idea, availability): more space between groups than inside them
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-6">
@@ -97,7 +96,7 @@ export function ProjectStep({ artist, values, errors, errorText, update }: StepP
         </p>
         <AvailabilityGrid
           workingSlots={artist.workingSlots}
-          value={values.availability}
+          selectedSlots={values.availability}
           onToggle={(slot) => update({ availability: toggle(values.availability, slot) })}
           invalid={Boolean(errors.availability)}
         />

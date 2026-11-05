@@ -1,7 +1,7 @@
 import type { PublicArtist } from '@inkflow/shared';
 
 // Reminds the prospect who they are writing to
-export function ArtistReminder({ artist }: { artist: PublicArtist }) {
+export function ArtistSummaryCard({ artist }: { artist: PublicArtist }) {
   return (
     <div className="mt-8 hidden items-center gap-4 rounded-xl bg-card/60 p-4 lg:flex">
       {artist.portrait && <img src={artist.portrait} alt="" className="size-14 rounded-full object-cover" />}

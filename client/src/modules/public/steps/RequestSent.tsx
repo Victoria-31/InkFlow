@@ -8,17 +8,16 @@ import type { FormValues } from '../project-request-form';
 
 type RequestSentProps = { artist: PublicArtist; values: FormValues; project: CreatedProjectRequest };
 
-const longDate = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
-
 export function RequestSent({ artist, values, project }: RequestSentProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const longDate = new Intl.DateTimeFormat(i18n.language, { day: '2-digit', month: 'long', year: 'numeric' });
   const headingRef = useNewScreen<HTMLHeadingElement>();
   const name = artist.firstName;
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-16">
-      <div className="relative isolate flex flex-col gap-3 lg:sticky lg:top-8 lg:min-h-[32rem] lg:self-start">
+      <div className="relative isolate flex flex-col gap-3 lg:sticky lg:top-8 lg:min-h-128 lg:self-start">
         <p className="eyebrow">
           {t('request.sent.reference', { id: String(project.id).padStart(3, '0'), date: longDate.format(new Date()) })}
         </p>

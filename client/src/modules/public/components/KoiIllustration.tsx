@@ -5,7 +5,7 @@ import koi from '@/assets/koi.svg';
 export function KoiIllustration() {
   return (
     <div
-      className="pointer-events-none fixed -bottom-16 -left-16 -z-10 size-80 bg-primary opacity-10 lg:-bottom-24 lg:-left-24 lg:size-[32rem]"
+      className="pointer-events-none fixed -bottom-16 -left-16 -z-10 size-80 bg-primary opacity-10 lg:-bottom-24 lg:-left-24 lg:size-128"
       style={{ maskImage: `url(${koi})`, maskSize: 'contain', maskRepeat: 'no-repeat' }}
     />
   );

@@ -1,19 +1,27 @@
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { toRequest } from '../project-request-form';
 import { FieldError } from './FieldError';
 import type { StepProps } from './types';
 
-const euros = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-
 export function ReviewStep({ artist, values, errors, errorText, update }: StepProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const none = t('request.review.none');
+  const euros = new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
-  const budget = [values.budgetMin, values.budgetMax]
-    .filter((amount) => amount !== '')
-    .map((amount) => euros.format(Number(amount)));
+
+  const { budgetMin, budgetMax } = toRequest(values);
+  let budget = none;
+  if (budgetMin !== undefined && budgetMax !== undefined) {
+    budget = `${euros.format(budgetMin)} – ${euros.format(budgetMax)}`;
+  } else if (budgetMin !== undefined) {
+    budget = t('request.review.budgetFrom', { amount: euros.format(budgetMin) });
+  } else if (budgetMax !== undefined) {
+    budget = t('request.review.budgetUpTo', { amount: euros.format(budgetMax) });
+  }
+
   const slots = values.availability.map((slot) => {
     const [day, half] = slot.split('_');
     return `${t(`days.${day}`)} ${t(`halfDays.${half}`)}`;
@@ -23,7 +31,7 @@ export function ReviewStep({ artist, values, errors, errorText, update }: StepPr
   const rows = [
     [t('request.review.bodyArea'), `${values.bodyArea} · ${values.size}`],
     [t('request.review.styles'), styles.join(' · ') || none],
-    [t('request.review.budget'), budget.join(' – ') || none],
+    [t('request.review.budget'), budget],
     [t('request.review.availability'), slots.join(', ')],
   ];
 
