@@ -53,6 +53,7 @@ afterAll(async () => {
   await prisma.project.deleteMany({ where: { artistId } });
   await prisma.artist.delete({ where: { id: artistId } });
   await prisma.account.delete({ where: { id: accountId } });
+  await prisma.tag.delete({ where: { id: tagId } });
   await prisma.$disconnect();
 });
 

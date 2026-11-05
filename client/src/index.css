@@ -12,7 +12,12 @@
   --card-foreground: #f1f5f9;
   --popover: #1e293b;
   --popover-foreground: #f1f5f9;
-  --primary: #6366f1;
+  /* Contrast checked against WCAG AA:
+     - primary: fills with white text (6.3:1); primary-hover stays darker so the text keeps its contrast
+     - primary-light: indigo used as text, icons and state borders on the dark background (6:1, 4.9:1 on cards) */
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #818cf8;
   --primary-foreground: #ffffff;
   --secondary: #1e293b;
   --secondary-foreground: #f1f5f9;
@@ -25,8 +30,9 @@
   --success: #22c55e;
   --warning: #f59e0b;
   --border: #2c3a52;
-  --input: #2c3a52;
-  --ring: #6366f1;
+  /* Form controls need a visible boundary: 3:1 against the background and cards (WCAG 1.4.11) */
+  --input: #64748b;
+  --ring: #818cf8;
   --radius: 0.5rem;
 }
 
@@ -41,6 +47,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -59,9 +67,39 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
+/* Three text sizes only: Tailwind's default scale is removed so no other size can be used */
+@theme {
+  --text-*: initial;
+  --text-small: 0.75rem;
+  --text-small--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-title: 2.25rem;
+  --text-title--line-height: 1.1;
+  --text-title-lg: 3rem;
+  --text-title-lg--line-height: 1.05;
+}
+
+/* From 640px, body text drops to 14px as in the desktop mockups. On mobile it stays at 16px:
+   below that size, Safari on iPhone zooms into the field being typed in. */
+@media (width >= 40rem) {
+  :root {
+    --text-body: 0.875rem;
+  }
+}
+
+/* Text styles of the charter, named by role */
+@utility eyebrow {
+  @apply text-small font-semibold tracking-[0.16em] text-muted-foreground uppercase;
+}
+
+@utility page-title {
+  @apply font-serif text-title sm:text-title-lg;
+}
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
   body {
     @apply bg-background font-sans text-foreground;

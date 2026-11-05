@@ -99,14 +99,15 @@ export function ProjectRequestPage() {
     <PublicPage artist={artist}>
       <StepLayout
         key={step}
+        artist={artist}
         stepIndex={stepIndex}
         title={t(`request.${step}.title`)}
-        intro={t(`request.${step}.intro`, { name: artist.firstName })}
+        intro={step === 'contact' ? undefined : t(`request.${step}.intro`, { name: artist.firstName })}
         aside={
           step === 'contact' && (
-            <div className="mt-6 hidden flex-col gap-2 lg:flex">
-              <p className="font-serif text-3xl">{t('request.contact.asideTitle')}</p>
-              <p className="text-sm text-muted-foreground">{t('request.contact.asideText')}</p>
+            <div className="mt-4 hidden flex-col gap-1 lg:flex">
+              <p className="text-body font-medium">{t('request.contact.asideTitle')}</p>
+              <p className="text-body text-muted-foreground">{t('request.contact.asideText')}</p>
             </div>
           )
         }
@@ -116,33 +117,24 @@ export function ProjectRequestPage() {
           {step === 'contact' && <ContactStep {...stepProps} />}
           {step === 'review' && <ReviewStep {...stepProps} />}
 
-          {step !== 'review' && <p className="text-xs text-muted-foreground">{t('request.requiredNote')}</p>}
+          {step !== 'review' && <p className="text-small text-muted-foreground">{t('request.requiredNote')}</p>}
           {hasServerError && (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-body text-destructive">
               {t('common.genericError')}
             </p>
           )}
 
           <div className="flex gap-3">
             {stepIndex === 0 ? (
-              <Link
-                to={`/${artist.username}`}
-                className={buttonVariants({ variant: 'secondary', size: 'lg', className: 'h-11 px-5' })}
-              >
+              <Link to={`/${artist.username}`} className={buttonVariants({ variant: 'secondary', size: 'lg' })}>
                 {t('common.back')}
               </Link>
             ) : (
-              <Button
-                type="button"
-                variant="secondary"
-                size="lg"
-                className="h-11 px-5"
-                onClick={() => setStepIndex(isLastStep ? 0 : stepIndex - 1)}
-              >
+              <Button type="button" variant="secondary" size="lg" onClick={() => setStepIndex(isLastStep ? 0 : stepIndex - 1)}>
                 {isLastStep ? t('request.review.edit') : t('common.back')}
               </Button>
             )}
-            <Button type="submit" size="lg" className="h-11 flex-1" disabled={createRequest.isPending}>
+            <Button type="submit" size="lg" className="flex-1" disabled={createRequest.isPending}>
               {submitLabel}
               <ArrowRight aria-hidden="true" />
             </Button>

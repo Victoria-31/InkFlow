@@ -11,42 +11,61 @@ type TextFieldProps = {
   error?: string;
   hint?: string;
   multiline?: boolean;
-} & Pick<ComponentProps<'input'>, 'type' | 'inputMode' | 'autoComplete'>;
+  // Shows a character counter under the field
+  maxLength?: number;
+} & Pick<ComponentProps<'input'>, 'type' | 'inputMode' | 'autoComplete' | 'placeholder'>;
 
-// Label, hint and error message linked to the field for screen readers
-export function TextField({ id, label, value, onChange, error, hint, multiline = false, ...inputProps }: TextFieldProps) {
+const count = new Intl.NumberFormat('fr-FR');
+
+// Label, hint, counter and error message linked to the field for screen readers
+export function TextField({
+  id,
+  label,
+  value,
+  onChange,
+  error,
+  hint,
+  multiline = false,
+  maxLength,
+  ...inputProps
+}: TextFieldProps) {
   const hintId = `${id}-hint`;
+  const counterId = `${id}-counter`;
   const errorId = `${id}-error`;
-  const describedBy = [hint && hintId, error && errorId].filter(Boolean).join(' ') || undefined;
+  const describedBy = [hint && hintId, maxLength && counterId, error && errorId].filter(Boolean).join(' ') || undefined;
   // Filled fields, as in the Figma kit
   const fieldProps = {
     id,
     value,
-    className: 'bg-card dark:bg-card',
+    placeholder: inputProps.placeholder,
+    // Native limit: typing or pasting stops at maxLength (the API still checks it)
+    maxLength,
     'aria-invalid': Boolean(error),
     'aria-describedby': describedBy,
+    onChange: (event: { target: { value: string } }) => onChange(event.target.value),
   };
 
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={id}>{label}</Label>
       {hint && (
-        <p id={hintId} className="text-sm text-muted-foreground">
+        <p id={hintId} className="text-small text-muted-foreground">
           {hint}
         </p>
       )}
       {multiline ? (
-        <Textarea {...fieldProps} rows={6} onChange={(event) => onChange(event.target.value)} />
+        <Textarea {...fieldProps} rows={6} className="bg-card dark:bg-card" />
       ) : (
-        <Input
-          {...fieldProps}
-          {...inputProps}
-          className="h-11 bg-card dark:bg-card"
-          onChange={(event) => onChange(event.target.value)}
-        />
+        <Input {...fieldProps} {...inputProps} className="h-11 bg-card dark:bg-card" />
+      )}
+      {/* Read with the field (aria-describedby) rather than announced at each keystroke */}
+      {maxLength && (
+        <p id={counterId} className="self-end text-small text-muted-foreground">
+          {count.format(value.length)} / {count.format(maxLength)}
+        </p>
       )}
       {error && (
-        <p id={errorId} className="text-sm text-destructive">
+        <p id={errorId} className="text-body text-destructive">
           {error}
         </p>
       )}

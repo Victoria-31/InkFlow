@@ -1,9 +1,9 @@
+import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { AVAILABILITIES, type Availability } from '@inkflow/shared';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 
 const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+const HALF_DAYS = ['AM', 'PM'];
 
 type AvailabilityGridProps = {
   workingSlots: Availability[];
@@ -12,27 +12,63 @@ type AvailabilityGridProps = {
   invalid: boolean;
 };
 
-// One group per working day, with only the half-days the artist works
+// Calendar-like table: one column per working day, one row per half-day.
+// Half-days when the studio is closed are shown but cannot be chosen.
 export function AvailabilityGrid({ workingSlots, value, onToggle, invalid }: AvailabilityGridProps) {
   const { t } = useTranslation();
-  const slotsOf = (day: string) => AVAILABILITIES.filter((slot) => slot.startsWith(day) && workingSlots.includes(slot));
-  const workingDays = DAYS.filter((day) => slotsOf(day).length > 0);
+  const workingDays = DAYS.filter((day) => workingSlots.some((slot) => slot.startsWith(day)));
 
   return (
-    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {workingDays.map((day) => (
-        <li key={day}>
-          <fieldset className="flex flex-col gap-2 rounded-lg border p-3">
-            <legend className="px-1 text-sm font-medium">{t(`days.${day}`)}</legend>
-            {slotsOf(day).map((slot) => (
-              <Label key={slot} className="font-normal">
-                <Checkbox checked={value.includes(slot)} onCheckedChange={() => onToggle(slot)} aria-invalid={invalid} />
-                {t(`halfDays.${slot.split('_')[1]}`)}
-              </Label>
-            ))}
-          </fieldset>
-        </li>
-      ))}
-    </ul>
+    <table className="w-full table-fixed border-separate border-spacing-2">
+      <thead>
+        <tr>
+          <td />
+          {workingDays.map((day) => (
+            <th key={day} scope="col" className="text-small font-medium text-muted-foreground uppercase">
+              {t(`daysShort.${day}`)}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {HALF_DAYS.map((half) => (
+          <tr key={half}>
+            <th scope="row" className="text-left text-body font-medium first-letter:uppercase">
+              {t(`halfDays.${half}`)}
+            </th>
+            {workingDays.map((day) => {
+              const slot = `${day}_${half}` as Availability;
+              const label = `${t(`days.${day}`)} ${t(`halfDays.${half}`)}`;
+              if (!workingSlots.includes(slot) || !AVAILABILITIES.includes(slot)) {
+                return (
+                  <td key={slot} className="text-center text-muted-foreground">
+                    <span aria-hidden="true">·</span>
+                    <span className="sr-only">{`${label} : ${t('request.project.closed')}`}</span>
+                  </td>
+                );
+              }
+              const checked = value.includes(slot);
+              return (
+                <td key={slot}>
+                  <label className="block cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={checked}
+                      onChange={() => onToggle(slot)}
+                      aria-invalid={invalid}
+                    />
+                    <span className="flex h-11 items-center justify-center rounded-md border border-input bg-card transition-colors peer-checked:border-primary-light peer-checked:bg-primary/15 peer-focus-visible:ring-3 peer-focus-visible:ring-ring hover:border-muted-foreground">
+                      {checked && <Check aria-hidden="true" className="size-4 text-primary-light" />}
+                    </span>
+                    <span className="sr-only">{label}</span>
+                  </label>
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
