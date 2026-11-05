@@ -54,7 +54,7 @@ export function ArtistPage() {
             </h2>
             <ol className="flex flex-col gap-4">
               {[1, 2, 3].map((number) => (
-                <li key={number} className="flex gap-4">
+                <li key={number} className="flex items-baseline gap-4">
                   <span aria-hidden="true" className="font-serif text-2xl leading-none text-primary">
                     0{number}
                   </span>
