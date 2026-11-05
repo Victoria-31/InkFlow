@@ -1,14 +1,120 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/inter';
 
+/* InkFlow charter (Figma kit), mapped onto the shadcn/ui variables. Dark theme only. */
+:root {
+  color-scheme: dark;
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  /* Contrast checked against WCAG AA:
+     - primary: fills with white text (6.3:1); primary-hover stays darker so the text keeps its contrast
+     - primary-light: indigo used as text, icons and state borders on the dark background (6:1, 4.9:1 on cards) */
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #818cf8;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --muted: #172033;
+  --muted-foreground: #a3afc2;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+  /* Lighter than the #DC2626 of the kit so error text reaches a 4.5:1 contrast on the background */
+  --destructive: #f87171;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --border: #2c3a52;
+  /* Form controls need a visible boundary: 3:1 against the background and cards (WCAG 1.4.11) */
+  --input: #64748b;
+  --ring: #818cf8;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+/* Three text sizes only: Tailwind's default scale is removed so no other size can be used */
 @theme {
-  --color-background: #0F172A;
-  --color-card: #1E293B;
-  --color-primary: #6366F1;
-  --color-danger: #DC2626;
-  --color-text: #F1F5F9;
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
+  --text-*: initial;
+  --text-small: 0.75rem;
+  --text-small--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-title: 2.25rem;
+  --text-title--line-height: 1.1;
+  --text-title-lg: 3rem;
+  --text-title-lg--line-height: 1.05;
+}
 
-  --font-serif: "Instrument Serif", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+/* 16px on mobile, because Safari on iPhone zooms into fields with smaller text. 14px from 640px, as in the mockups. */
+@media (width >= 40rem) {
+  :root {
+    --text-body: 0.875rem;
+  }
+}
+
+@utility eyebrow {
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility page-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+
+  @media (width >= 40rem) {
+    font-size: var(--text-title-lg);
+    line-height: var(--text-title-lg--line-height);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
 }

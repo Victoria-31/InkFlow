@@ -1,0 +1,145 @@
+{
+  "common": {
+    "loading": "Chargement…",
+    "genericError": "Une erreur est survenue. Réessayez dans quelques instants.",
+    "back": "Retour",
+    "continue": "Continuer"
+  },
+  "header": {
+    "studio": "Atelier {{name}}",
+    "clientSpace": "Espace client"
+  },
+  "notFound": {
+    "pageTitle": "Page introuvable",
+    "pageText": "Cette adresse ne correspond à aucune page d’InkFlow.",
+    "artistTitle": "Atelier introuvable",
+    "artistText": "Ce lien ne correspond à aucun atelier. Vérifiez l’adresse transmise par votre tatoueur."
+  },
+  "artist": {
+    "tagline": "L’encre raconte votre histoire.",
+    "photoAlt": "{{name}} au travail dans son atelier",
+    "specialties": "Spécialités",
+    "journeyTitle": "Du papier à la peau",
+    "journey": {
+      "1": {
+        "title": "Racontez votre idée",
+        "text": "Une demande et vos inspirations."
+      },
+      "2": {
+        "title": "Construisons votre projet",
+        "text": "Devis, acompte, puis esquisse privée."
+      },
+      "3": {
+        "title": "Donnons-lui vie",
+        "text": "Votre séance et un suivi cicatrisation."
+      }
+    },
+    "cta": "Parlons de votre tatouage",
+    "ctaNote": "Sans engagement"
+  },
+  "request": {
+    "step": "Votre demande / {{current}} sur {{total}}",
+    "requiredNote": "* Champs obligatoires.",
+    "project": {
+      "title": "Votre idée, en mots.",
+      "intro": "Le point de départ d’une pièce qui vous ressemble.",
+      "bodyArea": "Emplacement",
+      "bodyAreaPlaceholder": "Avant-bras gauche, face externe",
+      "size": "Taille approximative",
+      "sizePlaceholder": "18 cm",
+      "styles": "Styles · facultatif, plusieurs choix",
+      "budget": "Budget (€) · facultatif",
+      "budgetMin": "Minimum",
+      "budgetMax": "Maximum",
+      "description": "Description",
+      "descriptionPlaceholder": "Motif, ambiance, couleurs…",
+      "availability": "Vos disponibilités",
+      "availabilityHint": "Cochez les demi-journées où l’atelier est ouvert et où vous êtes libre.",
+      "flexibleSchedule": "Mon emploi du temps change souvent",
+      "closed": "atelier fermé"
+    },
+    "contact": {
+      "title": "Faisons connaissance.",
+      "asideTitle": "Un échange, pas une inscription.",
+      "asideText": "Vos coordonnées servent uniquement au suivi de votre tatouage. Pas de profil public, pas de newsletter.",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "noticeTitle": "Votre adresse ouvre votre espace",
+      "noticeText": "Après échange avec {{name}}, vous recevrez une invitation personnelle pour suivre votre projet."
+    },
+    "review": {
+      "title": "Tout commence ici.",
+      "intro": "Relisez votre demande avant de la confier à {{name}}.",
+      "projectTitle": "Votre projet",
+      "bodyArea": "Emplacement",
+      "styles": "Styles",
+      "budget": "Budget",
+      "budgetFrom": "À partir de {{amount}}",
+      "budgetUpTo": "Jusqu’à {{amount}}",
+      "availability": "Disponibilités",
+      "none": "Non précisé",
+      "flexible": "Emploi du temps variable",
+      "consent": "J’accepte que {{name}} utilise ces informations pour étudier ma demande et me contacter. *",
+      "privacy": "Envoi sans engagement ni paiement. Vos données restent privées.",
+      "edit": "Modifier",
+      "submit": "Envoyer ma demande",
+      "sending": "Envoi en cours…"
+    },
+    "sent": {
+      "reference": "Demande IF-{{id}} · {{date}}",
+      "title": "Votre histoire arrive à l’atelier.",
+      "text": "Merci {{firstName}}. {{name}} a bien reçu votre idée. Vous recevrez sa réponse par email.",
+      "status": "Reçu",
+      "nextTitle": "Et maintenant ?",
+      "next": {
+        "1": "{{name}} étudie la faisabilité de votre idée.",
+        "2": "{{name}} vous invite dans votre espace pour échanger.",
+        "3": "Vous recevez un devis et une date proposée."
+      },
+      "nextNote": "L’esquisse commence après réception de l’acompte.",
+      "backToStudio": "Revenir à l’atelier",
+      "footnote": "Une seule demande suffit. {{name}} prend le relais."
+    }
+  },
+  "days": {
+    "MON": "Lundi",
+    "TUE": "Mardi",
+    "WED": "Mercredi",
+    "THU": "Jeudi",
+    "FRI": "Vendredi",
+    "SAT": "Samedi",
+    "SUN": "Dimanche"
+  },
+  "halfDays": {
+    "AM": "matin",
+    "PM": "après-midi"
+  },
+  "errors": {
+    "required": "Ce champ est obligatoire.",
+    "too_long": "Ce texte est trop long.",
+    "invalid_email": "Adresse email invalide.",
+    "invalid_budget": "Indiquez un nombre entier positif.",
+    "budget_order": "Le minimum doit être inférieur ou égal au maximum.",
+    "availability_required": "Cochez au moins une demi-journée, ou indiquez que votre emploi du temps change souvent.",
+    "invalid_availability": "Demi-journée invalide.",
+    "not_working_slot": "L’atelier n’est pas ouvert sur l’une des demi-journées choisies.",
+    "unknown_tag": "Un des styles choisis n’existe plus.",
+    "consent_required": "Votre accord est nécessaire pour envoyer la demande."
+  },
+  "daysShort": {
+    "MON": "Lun",
+    "TUE": "Mar",
+    "WED": "Mer",
+    "THU": "Jeu",
+    "FRI": "Ven",
+    "SAT": "Sam",
+    "SUN": "Dim"
+  },
+  "footer": {
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "copyright": "© {{year}} InkFlow",
+    "nav": "Informations légales"
+  }
+}
