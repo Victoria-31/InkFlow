@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { TextField } from '@/components/ui/text-field';
+import { TextField } from '@/components/ui/TextField';
 import { Notice } from '../components/Notice';
 import type { StepProps } from './types';
 

@@ -219,6 +219,8 @@ inkflow/
 └── docker-compose.yaml
 ```
 
+Les conventions de nommage, de Git, d'API et de code sont décrites dans [CONVENTIONS.md](CONVENTIONS.md).
+
 ---
 
 ## Informations projet
