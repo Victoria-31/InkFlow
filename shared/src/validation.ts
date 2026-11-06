@@ -1,4 +1,4 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
 // Field path ("budgetMax", "tagIds.0") → error code, translated by the client
 export type FieldErrors = Record<string, string>;
@@ -18,3 +18,6 @@ export function validate<S extends z.ZodType>(schema: S, input: unknown): Valida
   }
   return { success: false, errors };
 }
+
+// Error messages are codes, translated by the client (i18n)
+export const requiredText = (max: number) => z.string('required').trim().min(1, 'required').max(max, 'too_long');

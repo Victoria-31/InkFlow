@@ -81,7 +81,7 @@ model Account {
   lastName  String   @map("last_name") @db.VarChar(100)
   firstName String   @map("first_name") @db.VarChar(100)
   email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
+  passwordHash String @map("password_hash") @db.VarChar(255)
   role      Role
   createdAt DateTime @default(now()) @map("created_at")
 

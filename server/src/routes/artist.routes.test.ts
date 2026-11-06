@@ -35,7 +35,7 @@ beforeAll(async () => {
       firstName: 'Ren',
       lastName: 'Test',
       email: `${username}@example.com`,
-      password: 'not-a-real-hash',
+      passwordHash: 'not-a-real-hash',
       role: 'ARTIST',
       artist: { create: { username, city: 'Lyon', workingSlots: ['TUE_PM', 'SAT_AM'] } },
     },
