@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useNewScreen } from '@/hooks/useNewScreen';
 import type { CreatedProjectRequest, PublicArtist } from '@inkflow/shared';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/Button';
 import { KoiIllustration } from '../components/KoiIllustration';
 import type { FormValues } from '../project-request-form';
 

@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { projectRequestSchema, validate, type FieldErrors } from '@inkflow/shared';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { getProblem } from '@/request/http';
 import { ArtistQueryState } from '../components/ArtistQueryState';
 import { PublicPage } from '../components/PublicPage';
