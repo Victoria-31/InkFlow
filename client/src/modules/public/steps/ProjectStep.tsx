@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ChoicePill } from '@/components/ui/choice-pill';
-import { Label } from '@/components/ui/label';
-import { TextField } from '@/components/ui/text-field';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { ChoicePill } from '@/components/ui/ChoicePill';
+import { Label } from '@/components/ui/Label';
+import { TextField } from '@/components/ui/TextField';
 import { AvailabilityGrid } from '../components/AvailabilityGrid';
 import { toggle } from '../project-request-form';
 import { FieldError } from './FieldError';

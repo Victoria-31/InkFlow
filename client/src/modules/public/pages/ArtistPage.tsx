@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/Button';
 import { ArtistQueryState } from '../components/ArtistQueryState';
 import { PublicPage } from '../components/PublicPage';
 import { useArtist } from '../hooks/useArtist';

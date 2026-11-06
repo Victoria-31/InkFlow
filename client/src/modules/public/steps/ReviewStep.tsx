@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { Label } from '@/components/ui/Label';
 import { toRequest } from '../project-request-form';
 import { FieldError } from './FieldError';
 import type { StepProps } from './types';
