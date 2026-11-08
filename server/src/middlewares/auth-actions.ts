@@ -1,45 +1,9 @@
 import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
-import * as authService from "../services/auth.service.js";
 import { hashPassword } from "../utils/password.js";
 
 
-const login: RequestHandler = async (req, res, next) => {
-  try {
-    const account = await authService.verifyCredentials(req.body);
-
-    const payload = {
-      id: account.id,
-      email: account.email,
-      role: "artist",
-    };
-
-    if (!process.env.APP_SECRET) {
-      throw new Error(
-        "Vous n'avez pas configuré votre APP SECRET dans le .env",
-      );
-    }
-
-    const token = await jwt.sign(payload, process.env.APP_SECRET, {
-      expiresIn: "1y",
-    });
-    res.cookie("auth", token).send({
-      message: "Utilisateur connecté",
-      role: payload.role,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const logout: RequestHandler = async (req, res, next) => {
-  try {
-    res.clearCookie("auth").send("Cookies supprimés");
-  } catch (error) {
-    next(error);
-  }
-};
 
 const hashPasswordMiddleware: RequestHandler = async (req, res, next) => {
   try {
@@ -85,4 +49,4 @@ const verifyAccount: RequestHandler = async (req, res, next) => {
 };
 
 
-export default { login, logout, hashPassword: hashPasswordMiddleware, verifyAccount };
+export default { hashPassword: hashPasswordMiddleware, verifyAccount };

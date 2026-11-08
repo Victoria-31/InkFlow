@@ -1,14 +1,8 @@
-import { prisma } from "../db/prisma.js";
+import { prisma } from '../db/prisma.js';
 
-  export function findByEmail(email: string) {
+export function findByEmail(email: string) {
   return prisma.account.findUnique({
     where: { email },
-    select: { id: true, email: true, passwordHash: true },
+    select: { id: true, role: true, passwordHash: true },
   });
-
-// export function findByEmailWithPassword(email: string, passwordHash: string) {
-//   return prisma.account.findUnique({
-//     where: { email },
-//     select: { id: true, email: true, passwordHash: true },
-//   });
 }
