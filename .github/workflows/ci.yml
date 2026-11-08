@@ -27,6 +27,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://inkflow:inkflow@localhost:5432/inkflow?schema=public
+      APP_SECRET: ci-only-secret-not-used-anywhere-else
 
     steps:
       - uses: actions/checkout@v4

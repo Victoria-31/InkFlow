@@ -1,9 +1,6 @@
-import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-
 import { hashPassword } from "../utils/password.js";
-
-
+import type { RequestHandler } from "express";
 
 const hashPasswordMiddleware: RequestHandler = async (req, res, next) => {
   try {
