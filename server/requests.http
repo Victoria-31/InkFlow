@@ -1,0 +1,67 @@
+# Manual API checks - needs the "REST Client" VS Code extension
+# Run `pnpm dev` and `pnpm db:seed` first. Cookies are kept between requests.
+
+@baseUrl = http://localhost:3000/api
+
+### Health
+GET {{baseUrl}}/health
+
+### Auth — login (seed account)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ren@inkflow.dev",
+  "password": "inkflow-dev"
+}
+
+### Auth — wrong password (401)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ren@inkflow.dev",
+  "password": "wrong-password"
+}
+
+### Auth — unknown email (401, same response as above)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "nobody@inkflow.dev",
+  "password": "inkflow-dev"
+}
+
+### Auth — invalid body (400)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "not-an-email",
+  "password": ""
+}
+
+### Auth — logout
+POST {{baseUrl}}/auth/logout
+
+### Artists — public profile
+GET {{baseUrl}}/artists/ren
+
+### Artists — send a project request
+POST {{baseUrl}}/artists/ren/projects
+Content-Type: application/json
+
+{
+  "firstName": "Léa",
+  "lastName": "Martin",
+  "email": "lea@example.com",
+  "bodyArea": "Nuque",
+  "size": "8 cm",
+  "budgetMin": 300,
+  "budgetMax": 450,
+  "description": "Un ensō avec quelques tiges de bambou.",
+  "availability": ["TUE_PM"],
+  "flexibleSchedule": false,
+  "consent": true
+}
