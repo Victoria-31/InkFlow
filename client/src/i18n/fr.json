@@ -154,5 +154,8 @@
   "dashboard": {
     "title": "Tableau de bord",
     "logout": "Se déconnecter"
+  },
+  "myProjects": {
+    "title": "Mes projets"
   }
 }
