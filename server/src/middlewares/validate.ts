@@ -16,3 +16,15 @@ export function validateBody(schema: Schema): RequestHandler {
     next();
   };
 }
+
+// Checks route parameters only: they stay strings, converted by the controller once known to be valid
+export function validateParams(schema: Schema): RequestHandler {
+  return (req, _res, next) => {
+    const result = validate(schema, req.params);
+    if (!result.success) {
+      next(new HttpError(400, 'validation_error', result.errors));
+      return;
+    }
+    next();
+  };
+}

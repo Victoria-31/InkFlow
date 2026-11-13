@@ -48,6 +48,27 @@ async function main() {
       create: { artistId: artist.id, tagId: tag.id },
     });
   }
+  // Client linked to one of Ren's projects, to try the client space and the role checks by hand
+  const client = await prisma.account.upsert({
+    where: { email: 'lea@inkflow.dev' },
+    update: {},
+    create: { email: 'lea@inkflow.dev', firstName: 'Léa', lastName: 'Martin', passwordHash: hashedPassword, role: 'CLIENT' },
+  });
+  const hasProject = await prisma.project.count({ where: { clientId: client.id } });
+  if (!hasProject) {
+    await prisma.project.create({
+      data: {
+        artistId: artist.id,
+        clientId: client.id,
+        bodyArea: 'Nuque',
+        size: '8 cm',
+        clientNote: 'Un ensō avec quelques tiges de bambou.',
+        prospectFirstName: 'Léa',
+        prospectLastName: 'Martin',
+        prospectEmail: 'lea@inkflow.dev',
+      },
+    });
+  }
 }
 
 main()

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { loginSchema, validate, type FieldErrors, type LoginInput } from '@inkflow/shared';
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
+import { HOME_PATHS } from '@/home-paths';
 import { useNewScreen } from '@/hooks/useNewScreen';
 import { getProblem } from '@/request/http';
 import { useLogin } from '../hooks/useLogin';
@@ -41,7 +42,7 @@ export function LoginPage() {
     }
     setErrors({});
     loginMutation.mutate(result.data, {
-      onSuccess: () => navigate('/studio', { replace: true }),
+      onSuccess: ({ role }) => navigate(HOME_PATHS[role], { replace: true }),
       onError: (error) => {
         const fieldErrors = getProblem(error)?.errors;
         if (fieldErrors) showErrors(fieldErrors);

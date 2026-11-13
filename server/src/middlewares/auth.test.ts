@@ -6,7 +6,7 @@ import { errorHandler } from './error-handler.js';
 import { requireAuth, requireRole } from './auth.js';
 import { AUTH_COOKIE, signAuthToken } from '../utils/session.js';
 
-// Throwaway app: no route uses requireRole yet
+// Throwaway app: tests the middleware alone, apart from the real routes
 const app = express();
 app.use(cookieParser());
 app.get('/artist-only', requireAuth, requireRole('ARTIST'), (_req, res) => {

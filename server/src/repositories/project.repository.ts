@@ -35,3 +35,18 @@ export function createRequest(artistId: number, request: ProjectRequest) {
     select: { id: true, status: true, createdAt: true },
   });
 }
+
+// Project.artistId points to Artist, not Account: the artist is matched through its account
+export function findForArtist(projectId: number, accountId: number) {
+  return prisma.project.findFirst({
+    where: { id: projectId, artist: { accountId } },
+    select: { id: true, status: true },
+  });
+}
+
+export function findForClient(projectId: number, accountId: number) {
+  return prisma.project.findFirst({
+    where: { id: projectId, clientId: accountId },
+    select: { id: true, status: true },
+  });
+}

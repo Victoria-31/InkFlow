@@ -52,6 +52,7 @@ POST {{baseUrl}}/auth/logout
 GET {{baseUrl}}/artists/ren
 
 ### Artists — send a project request
+# @name projectRequest
 POST {{baseUrl}}/artists/ren/projects
 Content-Type: application/json
 
@@ -68,3 +69,31 @@ Content-Type: application/json
   "flexibleSchedule": false,
   "consent": true
 }
+
+# The requests below need the project request above, then a login (artist first, client further down)
+### Artist space — own project (200)
+GET {{baseUrl}}/artist/projects/{{projectRequest.response.body.id}}
+
+### Artist space — unknown or another artist's project (404, same response)
+GET {{baseUrl}}/artist/projects/2147483647
+
+### Artist space — malformed id (400 invalid_id)
+GET {{baseUrl}}/artist/projects/0x10
+
+### Client space — as the artist (403)
+GET {{baseUrl}}/client/projects/1
+
+### Client — login (seed account, linked to one of Ren's projects)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "lea@inkflow.dev",
+  "password": "inkflow-dev"
+}
+
+### Client space — project the client is not linked to (404); the linked one is in Prisma Studio
+GET {{baseUrl}}/client/projects/{{projectRequest.response.body.id}}
+
+### Artist space — as the client (403)
+GET {{baseUrl}}/artist/projects/{{projectRequest.response.body.id}}
