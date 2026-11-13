@@ -11,3 +11,7 @@ export async function login(req: Request, res: Response) {
 export function logout(_req: Request, res: Response) {
   res.clearCookie(AUTH_COOKIE, authCookieOptions).sendStatus(204);
 }
+
+export function me(req: Request, res: Response) {
+  res.json(req.account);
+}

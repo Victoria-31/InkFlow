@@ -42,6 +42,9 @@ Content-Type: application/json
   "password": ""
 }
 
+### Auth — current account (401 if not logged in)
+GET {{baseUrl}}/auth/me
+
 ### Auth — logout
 POST {{baseUrl}}/auth/logout
 
