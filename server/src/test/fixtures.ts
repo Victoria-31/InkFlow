@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { Prisma, Role } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
 import { AUTH_COOKIE, signAuthToken } from '../utils/session.js';
 
@@ -24,7 +24,12 @@ export function createClientAccount(prefix: string) {
   });
 }
 
-export function createProject(artistId: number, clientId: number | null = null) {
+// overrides: the fields a test cares about (date, budget…), the rest stays valid and neutral
+export function createProject(
+  artistId: number,
+  clientId: number | null = null,
+  overrides: Partial<Prisma.ProjectUncheckedCreateInput> = {},
+) {
   return prisma.project.create({
     data: {
       artistId,
@@ -35,6 +40,7 @@ export function createProject(artistId: number, clientId: number | null = null) 
       prospectFirstName: 'Léa',
       prospectLastName: 'Martin',
       prospectEmail: 'lea@example.com',
+      ...overrides,
     },
   });
 }

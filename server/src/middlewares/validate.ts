@@ -28,3 +28,15 @@ export function validateParams(schema: Schema): RequestHandler {
     next();
   };
 }
+
+// Checks the query string only: Express 5 rebuilds req.query on each read, so it cannot be replaced
+export function validateQuery(schema: Schema): RequestHandler {
+  return (req, _res, next) => {
+    const result = validate(schema, req.query);
+    if (!result.success) {
+      next(new HttpError(400, 'validation_error', result.errors));
+      return;
+    }
+    next();
+  };
+}
