@@ -1,8 +1,6 @@
 import { z } from 'zod';
+import { requiredText } from './validation.js';
 import { AVAILABILITIES } from './availability.js';
-
-// Error messages are codes, translated by the client (i18n)
-const requiredText = (max: number) => z.string('required').trim().min(1, 'required').max(max, 'too_long');
 
 function hasIssueOn(payload: z.core.ParsePayload, fields: string[]) {
   return payload.issues.some((issue) => fields.includes(String(issue.path?.[0])));

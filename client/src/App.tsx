@@ -1,13 +1,16 @@
 import { Route, Routes } from 'react-router';
-import { ArtistPage } from '@/modules/public/pages/ArtistPage';
+import { atelierRoutes } from '@/modules/atelier/routes';
+import { authRoutes } from '@/modules/auth/routes';
 import { NotFoundPage } from '@/modules/public/pages/NotFoundPage';
-import { ProjectRequestPage } from '@/modules/public/pages/ProjectRequestPage';
+import { publicRoutes } from '@/modules/public/routes';
 
+// Static paths (/login, /studio) win over /:username whatever the order: React Router ranks routes by specificity
 export default function App() {
   return (
     <Routes>
-      <Route path=":username" element={<ArtistPage />} />
-      <Route path=":username/request" element={<ProjectRequestPage />} />
+      {authRoutes}
+      {atelierRoutes}
+      {publicRoutes}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

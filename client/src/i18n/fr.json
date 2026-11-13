@@ -125,7 +125,8 @@
     "invalid_availability": "Demi-journée invalide.",
     "not_working_slot": "L’atelier n’est pas ouvert sur l’une des demi-journées choisies.",
     "unknown_tag": "Un des styles choisis n’existe plus.",
-    "consent_required": "Votre accord est nécessaire pour envoyer la demande."
+    "consent_required": "Votre accord est nécessaire pour envoyer la demande.",
+    "invalid_credentials": "Email ou mot de passe incorrect."
   },
   "daysShort": {
     "MON": "Lun",
@@ -141,5 +142,17 @@
     "privacy": "Confidentialité",
     "copyright": "© {{year}} InkFlow",
     "nav": "Informations légales"
+  },
+  "login": {
+    "title": "Connexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "requiredNote": "Tous les champs sont obligatoires.",
+    "submit": "Se connecter",
+    "submitting": "Connexion…"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "logout": "Se déconnecter"
   }
 }

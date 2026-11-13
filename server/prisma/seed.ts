@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import argon2 from 'argon2';
+import { hashPassword } from '../src/utils/password.js';
 
 const prisma = new PrismaClient();
 
@@ -11,11 +11,17 @@ async function main() {
   }
 
   // Development-only credentials
-  const password = await argon2.hash('inkflow-dev'); // argon2id by default
+  const hashedPassword = await hashPassword('inkflow-dev'); // same Argon2 parameters as the app
   const account = await prisma.account.upsert({
     where: { email: 'ren@inkflow.dev' },
     update: {},
-    create: { email: 'ren@inkflow.dev', firstName: 'Ren', lastName: 'Matsuda', password, role: 'ARTIST' },
+    create: {
+      email: 'ren@inkflow.dev',
+      firstName: 'Ren',
+      lastName: 'Matsuda',
+      passwordHash: hashedPassword,
+      role: 'ARTIST',
+    },
   });
 
   const bio = 'Des pièces uniques, dessinées pour vous. Un dialogue direct avec Ren, de la première idée à la cicatrisation.';
