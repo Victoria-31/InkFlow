@@ -12,7 +12,7 @@ export function formatBudget(t: TFunction, language: string, { budgetMin, budget
   if (hasMin && hasMax) return `${euros.format(budgetMin)} – ${euros.format(budgetMax)}`;
   if (hasMin) return t('budget.from', { amount: euros.format(budgetMin) });
   if (hasMax) return t('budget.upTo', { amount: euros.format(budgetMax) });
-  return t('budget.none');
+  return t('common.notSpecified');
 }
 
 // "TUE_PM" → "Mardi après-midi"

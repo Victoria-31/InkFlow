@@ -4,7 +4,9 @@
     "genericError": "Une erreur est survenue. Réessayez dans quelques instants.",
     "back": "Retour",
     "continue": "Continuer",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "notSpecified": "Non précisé",
+    "flexibleSchedule": "Emploi du temps variable"
   },
   "header": {
     "studio": "Atelier {{name}}",
@@ -77,8 +79,6 @@
       "styles": "Styles",
       "budget": "Budget",
       "availability": "Disponibilités",
-      "none": "Non précisé",
-      "flexible": "Emploi du temps variable",
       "consent": "J’accepte que {{name}} utilise ces informations pour étudier ma demande et me contacter. *",
       "privacy": "Envoi sans engagement ni paiement. Vos données restent privées.",
       "edit": "Modifier",
@@ -160,8 +160,7 @@
   },
   "budget": {
     "from": "À partir de {{amount}}",
-    "upTo": "Jusqu’à {{amount}}",
-    "none": "Non précisé"
+    "upTo": "Jusqu’à {{amount}}"
   },
   "artistNav": {
     "label": "Espace atelier",
@@ -184,7 +183,6 @@
     "budget": "Budget",
     "styles": "Styles",
     "availability": "Disponibilités",
-    "flexible": "Emploi du temps variable",
     "description": "Description",
     "notFound": "Cette demande n’existe pas ou n’est plus disponible."
   }

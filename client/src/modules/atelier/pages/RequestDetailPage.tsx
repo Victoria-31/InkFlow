@@ -14,8 +14,14 @@ export function RequestDetailPage() {
 
 function RequestDetail({ id }: { id: number }) {
   const { t, i18n } = useTranslation();
-  const headingRef = useNewScreen<HTMLHeadingElement>();
+  // On large screens the list stays beside the request: no jump to the top, only into view if needed
+  const isLargeScreen = window.matchMedia('(width >= 64rem)').matches;
   const { data: request, isPending, error } = useArtistProject(id);
+  // active once loaded: the heading only exists then, so the focus can reach it
+  const headingRef = useNewScreen<HTMLHeadingElement>({
+    active: request !== undefined,
+    scroll: isLargeScreen ? 'nearest' : 'top',
+  });
 
   const backLink = (
     <Link
@@ -45,7 +51,7 @@ function RequestDetail({ id }: { id: number }) {
 
   const receivedOn = new Intl.DateTimeFormat(i18n.language, { dateStyle: 'long' }).format(new Date(request.createdAt));
   const slots = request.availability.map((slot) => formatSlot(t, slot));
-  if (request.flexibleSchedule) slots.push(t('requests.flexible'));
+  if (request.flexibleSchedule) slots.push(t('common.flexibleSchedule'));
 
   return (
     <article aria-labelledby="request-name" className="flex flex-col gap-6">
@@ -76,7 +82,7 @@ function RequestDetail({ id }: { id: number }) {
           </div>
           <div className="flex flex-col gap-2">
             <dt className="text-small text-muted-foreground">{t('requests.styles')}</dt>
-            <dd>{request.styles.length > 0 ? <StyleTags styles={request.styles} /> : t('budget.none')}</dd>
+            <dd>{request.styles.length > 0 ? <StyleTags styles={request.styles} /> : t('common.notSpecified')}</dd>
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
             <dt className="text-small text-muted-foreground">{t('requests.availability')}</dt>

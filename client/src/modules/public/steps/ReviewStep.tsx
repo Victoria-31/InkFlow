@@ -8,11 +8,11 @@ import type { StepProps } from './types';
 
 export function ReviewStep({ artist, values, errors, errorText, update }: StepProps) {
   const { t, i18n } = useTranslation();
-  const none = t('request.review.none');
+  const none = t('common.notSpecified');
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
   const budget = formatBudget(t, i18n.language, toRequest(values));
   const slots = values.availability.map((slot) => formatSlot(t, slot));
-  if (values.flexibleSchedule) slots.push(t('request.review.flexible'));
+  if (values.flexibleSchedule) slots.push(t('common.flexibleSchedule'));
 
   const rows = [
     [t('request.review.bodyArea'), `${values.bodyArea} · ${values.size}`],
