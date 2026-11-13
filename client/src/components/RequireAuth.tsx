@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router';
 import type { Role } from '@inkflow/shared';
 import { useCurrentAccount } from '@/hooks/useCurrentAccount';
 import { getProblem } from '@/request/http';
-import { HOME_PATHS } from './home-paths';
+import { HOME_PATHS } from '@/home-paths';
 
 type RequireAuthProps = { role: Role };
 

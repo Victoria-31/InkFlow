@@ -5,7 +5,7 @@ import { clientRoutes } from '@/modules/client/routes';
 import { NotFoundPage } from '@/modules/public/pages/NotFoundPage';
 import { publicRoutes } from '@/modules/public/routes';
 
-// Static paths (/login, /studio, /my-projects) win over /:username whatever the order: React Router ranks routes by specificity
+// Static paths (/login, /artist, /my-projects) win over /:username whatever the order: React Router ranks routes by specificity
 export default function App() {
   return (
     <Routes>

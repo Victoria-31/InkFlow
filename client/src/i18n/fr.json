@@ -3,7 +3,8 @@
     "loading": "Chargement…",
     "genericError": "Une erreur est survenue. Réessayez dans quelques instants.",
     "back": "Retour",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "logout": "Se déconnecter"
   },
   "header": {
     "studio": "Atelier {{name}}",
@@ -126,7 +127,8 @@
     "not_working_slot": "L’atelier n’est pas ouvert sur l’une des demi-journées choisies.",
     "unknown_tag": "Un des styles choisis n’existe plus.",
     "consent_required": "Votre accord est nécessaire pour envoyer la demande.",
-    "invalid_credentials": "Email ou mot de passe incorrect."
+    "invalid_credentials": "Email ou mot de passe incorrect.",
+    "invalid_id": "Identifiant invalide."
   },
   "daysShort": {
     "MON": "Lun",
@@ -152,8 +154,7 @@
     "submitting": "Connexion…"
   },
   "dashboard": {
-    "title": "Tableau de bord",
-    "logout": "Se déconnecter"
+    "title": "Tableau de bord"
   },
   "myProjects": {
     "title": "Mes projets"
