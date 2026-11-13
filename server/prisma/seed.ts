@@ -15,12 +15,13 @@ async function main() {
   const account = await prisma.account.upsert({
     where: { email: 'ren@inkflow.dev' },
     update: {},
-    create: { 
-      email: 'ren@inkflow.dev', 
-      firstName: 'Ren', 
-      lastName: 'Matsuda', 
-      passwordHash: hashedPassword, 
-      role: 'ARTIST' },
+    create: {
+      email: 'ren@inkflow.dev',
+      firstName: 'Ren',
+      lastName: 'Matsuda',
+      passwordHash: hashedPassword,
+      role: 'ARTIST',
+    },
   });
 
   const bio = 'Des pièces uniques, dessinées pour vous. Un dialogue direct avec Ren, de la première idée à la cicatrisation.';
