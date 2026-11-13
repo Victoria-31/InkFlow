@@ -141,5 +141,11 @@
     "privacy": "Confidentialité",
     "copyright": "© {{year}} InkFlow",
     "nav": "Informations légales"
+  },
+  "login": {
+    "title": "Connexion"
+  },
+  "dashboard": {
+    "title": "Tableau de bord"
   }
 }
