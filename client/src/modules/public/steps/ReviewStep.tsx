@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Label } from '@/components/ui/Label';
+import { formatBudget, formatSlot } from '@/format';
 import { toRequest } from '../project-request-form';
 import { FieldError } from './FieldError';
 import type { StepProps } from './types';
@@ -8,24 +9,9 @@ import type { StepProps } from './types';
 export function ReviewStep({ artist, values, errors, errorText, update }: StepProps) {
   const { t, i18n } = useTranslation();
   const none = t('request.review.none');
-  const euros = new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-
   const styles = artist.styles.filter((style) => values.tagIds.includes(style.id)).map((style) => style.name);
-
-  const { budgetMin, budgetMax } = toRequest(values);
-  let budget = none;
-  if (budgetMin !== undefined && budgetMax !== undefined) {
-    budget = `${euros.format(budgetMin)} – ${euros.format(budgetMax)}`;
-  } else if (budgetMin !== undefined) {
-    budget = t('request.review.budgetFrom', { amount: euros.format(budgetMin) });
-  } else if (budgetMax !== undefined) {
-    budget = t('request.review.budgetUpTo', { amount: euros.format(budgetMax) });
-  }
-
-  const slots = values.availability.map((slot) => {
-    const [day, half] = slot.split('_');
-    return `${t(`days.${day}`)} ${t(`halfDays.${half}`)}`;
-  });
+  const budget = formatBudget(t, i18n.language, toRequest(values));
+  const slots = values.availability.map((slot) => formatSlot(t, slot));
   if (values.flexibleSchedule) slots.push(t('request.review.flexible'));
 
   const rows = [
