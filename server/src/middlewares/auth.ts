@@ -1,7 +1,7 @@
-import type { RequestHandler } from 'express';
+import type { Request, RequestHandler } from 'express';
 import type { Role } from '@prisma/client';
 import { HttpError } from '../errors/http-error.js';
-import { AUTH_COOKIE, verifyAuthToken } from '../utils/session.js';
+import { AUTH_COOKIE, verifyAuthToken, type AuthAccount } from '../utils/session.js';
 
 export const requireAuth: RequestHandler = (req, _res, next) => {
   const token = req.cookies?.[AUTH_COOKIE];
@@ -25,4 +25,12 @@ export function requireRole(role: Role): RequestHandler {
     }
     next();
   };
+}
+
+// For handlers behind requireAuth: a 401 rather than a crash if a router is ever mounted without it
+export function getAccount(req: Request): AuthAccount {
+  if (!req.account) {
+    throw new HttpError(401, 'unauthenticated');
+  }
+  return req.account;
 }
