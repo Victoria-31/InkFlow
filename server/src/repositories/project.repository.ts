@@ -58,7 +58,7 @@ const artistDetailSelect = {
   clientFlexibleSchedule: true,
 } satisfies Prisma.ProjectSelect;
 
-// Project.artistId points to Artist, not Account: the artist is matched through its account
+// artistId is the Artist id, not the account id
 export function findAllForArtist(accountId: number, status?: ProjectStatus) {
   return prisma.project.findMany({
     where: { artist: { accountId }, status },

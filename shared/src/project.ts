@@ -6,14 +6,13 @@ import { PROJECT_STATUSES, type ProjectStatus } from './project-status.js';
 // Response of GET /api/client/projects/:id
 export type ProjectSummary = { id: number; status: ProjectStatus };
 
-// Query of GET /api/artist/projects: ?status=REQUEST lists the incoming requests
+// Query of GET /api/artist/projects
 export const projectListQuerySchema = z.object({
   status: z.enum(PROJECT_STATUSES, 'invalid_status').optional(),
 });
 export type ProjectListQuery = z.output<typeof projectListQuerySchema>;
 
-// Item of GET /api/artist/projects: what the artist needs to sort through the requests.
-// Same vocabulary as the request form (firstName, budgetMin…); dates are ISO strings.
+// Item of GET /api/artist/projects (dates as ISO strings)
 export type ArtistProjectListItem = {
   id: number;
   status: ProjectStatus;
@@ -26,7 +25,7 @@ export type ArtistProjectListItem = {
   budgetMax: number | null;
 };
 
-// Response of GET /api/artist/projects/:id: everything the prospect entered
+// Response of GET /api/artist/projects/:id
 export type ArtistProjectDetail = ArtistProjectListItem & {
   email: string;
   size: string;

@@ -4,7 +4,7 @@ import { getArtistProject, listArtistProjects } from '../controllers/project.con
 import { requireAuth, requireRole } from '../middlewares/auth.js';
 import { validateParams, validateQuery } from '../middlewares/validate.js';
 
-// Logged-in artist's space: every route below requires an ARTIST session
+// Every route below requires an ARTIST session
 export const artistSpaceRouter = Router();
 
 artistSpaceRouter.use(requireAuth, requireRole('ARTIST'));

@@ -3,7 +3,6 @@ import type { Availability } from '@inkflow/shared';
 
 type Budget = { budgetMin?: number | null; budgetMax?: number | null };
 
-// Shared by the request form (review step) and the artist's request screens
 export function formatBudget(t: TFunction, language: string, { budgetMin, budgetMax }: Budget) {
   const euros = new Intl.NumberFormat(language, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
   const hasMin = budgetMin !== undefined && budgetMin !== null;

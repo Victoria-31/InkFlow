@@ -4,7 +4,7 @@ import { getClientProject } from '../controllers/project.controller.js';
 import { requireAuth, requireRole } from '../middlewares/auth.js';
 import { validateParams } from '../middlewares/validate.js';
 
-// Logged-in client's space: every route below requires a CLIENT session
+// Every route below requires a CLIENT session
 export const clientSpaceRouter = Router();
 
 clientSpaceRouter.use(requireAuth, requireRole('CLIENT'));

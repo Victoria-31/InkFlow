@@ -17,7 +17,7 @@ export function validateBody(schema: Schema): RequestHandler {
   };
 }
 
-// Checks route parameters only: they stay strings, converted by the controller once known to be valid
+// Checks only: params stay strings
 export function validateParams(schema: Schema): RequestHandler {
   return (req, _res, next) => {
     const result = validate(schema, req.params);
@@ -29,7 +29,7 @@ export function validateParams(schema: Schema): RequestHandler {
   };
 }
 
-// Checks the query string only: Express 5 rebuilds req.query on each read, so it cannot be replaced
+// Checks only: Express 5 does not let req.query be replaced
 export function validateQuery(schema: Schema): RequestHandler {
   return (req, _res, next) => {
     const result = validate(schema, req.query);

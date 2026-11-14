@@ -24,7 +24,7 @@ export async function listArtistProjects(accountId: number, status?: ProjectStat
   return projects.map(toArtistListItem);
 }
 
-// Another account's project gets the same 404 as a missing one, so its existence is never revealed
+// Same 404 as a missing project: never reveal that it exists
 export async function getArtistProject(projectId: number, accountId: number): Promise<ArtistProjectDetail> {
   const project = await projectRepository.findForArtist(projectId, accountId);
   if (!project) {

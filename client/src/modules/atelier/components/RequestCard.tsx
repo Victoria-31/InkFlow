@@ -10,14 +10,12 @@ export function RequestCard({ request }: { request: ArtistProjectListItem }) {
   const receivedOn = new Intl.DateTimeFormat(i18n.language, { day: 'numeric', month: 'short' }).format(
     new Date(request.createdAt),
   );
-  // Unique per card: aria-labelledby and aria-describedby point to these ids
   const id = useId();
   const nameId = `${id}-name`;
   const dateId = `${id}-date`;
   const detailsId = `${id}-details`;
 
-  // NavLink sets aria-current="page" on the open request: the highlight is announced, not only shown.
-  // The link is named by the prospect alone; the rest is read as its description, so the list stays quick to scan.
+  // Named by the prospect only, the rest is read as a description
   return (
     <NavLink
       to={`/artist/requests/${request.id}`}

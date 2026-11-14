@@ -8,16 +8,15 @@ import { useArtistProject } from '../hooks/useArtistProject';
 
 export function RequestDetailPage() {
   const { id } = useParams();
-  // key: a new request is a new screen, so the focus moves to its heading again
+  // key: the focus moves again when another request opens
   return <RequestDetail key={id} id={Number(id)} />;
 }
 
 function RequestDetail({ id }: { id: number }) {
   const { t, i18n } = useTranslation();
-  // On large screens the list stays beside the request: no jump to the top, only into view if needed
   const isLargeScreen = window.matchMedia('(width >= 64rem)').matches;
   const { data: request, isPending, error } = useArtistProject(id);
-  // active once loaded: the heading only exists then, so the focus can reach it
+  // Waits for the heading to exist
   const headingRef = useNewScreen<HTMLHeadingElement>({
     active: request !== undefined,
     scroll: isLargeScreen ? 'nearest' : 'top',
@@ -36,7 +35,7 @@ function RequestDetail({ id }: { id: number }) {
     return <p role="status">{t('common.loading')}</p>;
   }
   if (error) {
-    // 404 also covers another artist's request (and a malformed id, 400): the page says the same thing
+    // Another artist's request also gets a 404
     const status = getProblem(error)?.status;
     const message = status === 404 || status === 400 ? t('requests.notFound') : t('common.genericError');
     return (

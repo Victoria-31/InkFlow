@@ -5,12 +5,10 @@ import { useNewScreen } from '@/hooks/useNewScreen';
 import { RequestCard } from '../components/RequestCard';
 import { useArtistProjects } from '../hooks/useArtistProjects';
 
-// List on the left, open request on the right (child route). On small screens, one at a time.
 export function RequestsPage() {
   const { t } = useTranslation();
   const { id } = useParams();
   const isRequestOpen = id !== undefined;
-  // The open request takes the focus; the list takes it back when the user returns to it
   const headingRef = useNewScreen<HTMLHeadingElement>({ active: !isRequestOpen });
   const { data: requests, isPending, isError } = useArtistProjects('REQUEST');
   const hasRequests = requests !== undefined && requests.length > 0;
@@ -41,7 +39,7 @@ export function RequestsPage() {
     );
   }
 
-  // The open request shows even when it is not in the list (no request left, or already past REQUEST)
+  // An open request shows even if it is no longer listed
   const hasTwoColumns = isRequestOpen || hasRequests;
   let detailClass = 'hidden';
   if (isRequestOpen) {
@@ -49,12 +47,11 @@ export function RequestsPage() {
   } else if (hasRequests) {
     detailClass = 'hidden lg:block';
   }
-  // Stays in view while the list scrolls: a click on a card low in the list shows its request at once
   detailClass = cn(detailClass, 'lg:sticky lg:top-6');
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-8">
-      {/* Hidden on small screens while a request is open, but kept for screen readers: the page keeps its h1 */}
+      {/* sr-only: the page keeps its h1 */}
       <div className={cn('flex flex-col gap-2', isRequestOpen && 'max-lg:sr-only')}>
         <p className="eyebrow">{t('requests.eyebrow')}</p>
         <h1 ref={headingRef} tabIndex={-1} className="page-title outline-none">

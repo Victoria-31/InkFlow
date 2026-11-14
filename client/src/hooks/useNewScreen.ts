@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 type NewScreenOptions = {
-  // Only acts while true, and again each time it becomes true
   active?: boolean;
-  // "top" for a new page, "nearest" for a panel beside content the user keeps
   scroll?: 'top' | 'nearest';
 };
 

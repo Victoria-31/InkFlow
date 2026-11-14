@@ -3,13 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { LogoutButton } from '@/components/LogoutButton';
 import logo from '@/assets/logo.svg';
 
-// Pages of the artist space, in menu order
 const ARTIST_NAV_LINKS = [
   { to: '/artist', label: 'artistNav.dashboard', end: true },
   { to: '/artist/requests', label: 'artistNav.requests', end: false },
 ];
 
-// Header and navigation shared by every page of the artist space
 export function ArtistLayout() {
   const { t } = useTranslation();
 
@@ -19,7 +17,7 @@ export function ArtistLayout() {
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-2 px-4 py-2 sm:px-8">
           <Link to="/artist" className="flex items-center gap-2 rounded-md">
             <img src={logo} alt="" className="size-16" />
-            {/* Part of the logo: not counted in the three text sizes of the page */}
+            {/* Logo text: outside the three text sizes */}
             <span className="font-serif text-title">InkFlow</span>
           </Link>
           <nav aria-label={t('artistNav.label')} className="order-last flex w-full gap-6 sm:order-none sm:w-auto sm:flex-1">
