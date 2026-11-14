@@ -1,14 +1,13 @@
 import { useEffect, useRef } from 'react';
 
 type NewScreenOptions = {
-  // false while the screen is not the one being shown (e.g. a list hidden behind an open item)
+  // Only acts while true, and again each time it becomes true
   active?: boolean;
-  // "top": a whole new page; "nearest": a panel next to content the user keeps (only scroll it into view if needed)
+  // "top" for a new page, "nearest" for a panel beside content the user keeps
   scroll?: 'top' | 'nearest';
 };
 
-// For a new screen (step, confirmation): scroll, then the focus moves to the title so screen readers announce it.
-// Runs when the screen appears, and again each time it becomes active.
+// Focus on the title of a new screen so screen readers announce it
 export function useNewScreen<T extends HTMLElement>({ active = true, scroll = 'top' }: NewScreenOptions = {}) {
   const ref = useRef<T>(null);
   useEffect(() => {

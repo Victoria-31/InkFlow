@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { ArtistProjectListItem } from '@inkflow/shared';
@@ -9,9 +10,11 @@ export function RequestCard({ request }: { request: ArtistProjectListItem }) {
   const receivedOn = new Intl.DateTimeFormat(i18n.language, { day: 'numeric', month: 'short' }).format(
     new Date(request.createdAt),
   );
-  const nameId = `request-${request.id}-name`;
-  const dateId = `request-${request.id}-date`;
-  const detailsId = `request-${request.id}-details`;
+  // Unique per card: aria-labelledby and aria-describedby point to these ids
+  const id = useId();
+  const nameId = `${id}-name`;
+  const dateId = `${id}-date`;
+  const detailsId = `${id}-details`;
 
   // NavLink sets aria-current="page" on the open request: the highlight is announced, not only shown.
   // The link is named by the prospect alone; the rest is read as its description, so the list stays quick to scan.
