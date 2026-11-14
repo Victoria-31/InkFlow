@@ -3,8 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { LogoutButton } from '@/components/LogoutButton';
 import logo from '@/assets/logo.svg';
 
-const navLinkClass =
-  'flex h-11 items-center border-b-2 border-transparent text-body text-muted-foreground hover:text-foreground aria-[current=page]:border-primary-light aria-[current=page]:font-semibold aria-[current=page]:text-foreground';
+// Pages of the artist space, in menu order
+const ARTIST_NAV_LINKS = [
+  { to: '/artist', label: 'artistNav.dashboard', end: true },
+  { to: '/artist/requests', label: 'artistNav.requests', end: false },
+];
 
 // Header and navigation shared by every page of the artist space
 export function ArtistLayout() {
@@ -20,12 +23,16 @@ export function ArtistLayout() {
             <span className="font-serif text-title">InkFlow</span>
           </Link>
           <nav aria-label={t('artistNav.label')} className="order-last flex w-full gap-6 sm:order-none sm:w-auto sm:flex-1">
-            <NavLink to="/artist" end className={navLinkClass}>
-              {t('artistNav.dashboard')}
-            </NavLink>
-            <NavLink to="/artist/requests" className={navLinkClass}>
-              {t('artistNav.requests')}
-            </NavLink>
+            {ARTIST_NAV_LINKS.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.end}
+                className="flex h-11 items-center border-b-2 border-transparent text-body text-muted-foreground hover:text-foreground aria-[current=page]:border-primary-light aria-[current=page]:font-semibold aria-[current=page]:text-foreground"
+              >
+                {t(link.label)}
+              </NavLink>
+            ))}
           </nav>
           <LogoutButton />
         </div>
