@@ -61,7 +61,7 @@ const artistDetailSelect = {
 // artistId is the Artist id, not the account id
 export function findAllForArtist(accountId: number, status?: ProjectStatus) {
   return prisma.project.findMany({
-    where: { artist: { accountId }, status },
+    where: { artist: { accountId: accountId }, status: status },
     orderBy: { createdAt: 'desc' },
     select: artistListSelect,
   });
@@ -69,7 +69,7 @@ export function findAllForArtist(accountId: number, status?: ProjectStatus) {
 
 export function findForArtist(projectId: number, accountId: number) {
   return prisma.project.findFirst({
-    where: { id: projectId, artist: { accountId } },
+    where: { id: projectId, artist: { accountId: accountId } },
     select: artistDetailSelect,
   });
 }
