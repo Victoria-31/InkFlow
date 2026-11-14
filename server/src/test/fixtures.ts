@@ -1,8 +1,8 @@
-import type { Role } from '@prisma/client';
+import type { Prisma, Role } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
 import { AUTH_COOKIE, signAuthToken } from '../utils/session.js';
 
-// Test data helpers: each test file passes a unique prefix so files never share rows
+// Each test file passes a unique prefix so files never share rows
 
 export function createArtistAccount(prefix: string) {
   return prisma.account.create({
@@ -24,7 +24,11 @@ export function createClientAccount(prefix: string) {
   });
 }
 
-export function createProject(artistId: number, clientId: number | null = null) {
+export function createProject(
+  artistId: number,
+  clientId: number | null = null,
+  overrides: Partial<Prisma.ProjectUncheckedCreateInput> = {},
+) {
   return prisma.project.create({
     data: {
       artistId,
@@ -35,6 +39,7 @@ export function createProject(artistId: number, clientId: number | null = null) 
       prospectFirstName: 'Léa',
       prospectLastName: 'Martin',
       prospectEmail: 'lea@example.com',
+      ...overrides,
     },
   });
 }

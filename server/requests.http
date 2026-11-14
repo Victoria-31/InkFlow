@@ -71,7 +71,16 @@ Content-Type: application/json
 }
 
 # The requests below need the project request above, then a login (artist first, client further down)
-### Artist space — own project (200)
+### Artist space — incoming requests, newest first (200)
+GET {{baseUrl}}/artist/projects?status=REQUEST
+
+### Artist space — every project, whatever the status (200)
+GET {{baseUrl}}/artist/projects
+
+### Artist space — unknown status (400 invalid_status)
+GET {{baseUrl}}/artist/projects?status=DONE
+
+### Artist space — own project, with everything the prospect entered (200)
 GET {{baseUrl}}/artist/projects/{{projectRequest.response.body.id}}
 
 ### Artist space — unknown or another artist's project (404, same response)

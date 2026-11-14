@@ -12,21 +12,41 @@ const accountIds: number[] = [];
 const artistIds: number[] = [];
 let artistCookie: string;
 let clientCookie: string;
+let emptyArtistCookie: string;
 let artistAccountId: number;
 let ownProjectId: number;
 let otherProjectId: number;
+let olderProjectId: number;
+let framingProjectId: number;
+let tagId: number;
 
 beforeAll(async () => {
   const ren = await createArtistAccount(`${prefix}-ren`);
   const kai = await createArtistAccount(`${prefix}-kai`);
+  const mia = await createArtistAccount(`${prefix}-mia`);
   const client = await createClientAccount(`${prefix}-client`);
-  accountIds.push(ren.id, kai.id, client.id);
-  artistIds.push(ren.artist!.id, kai.artist!.id);
+  accountIds.push(ren.id, kai.id, mia.id, client.id);
+  artistIds.push(ren.artist!.id, kai.artist!.id, mia.artist!.id);
+  emptyArtistCookie = sessionCookie(mia.id, 'ARTIST');
 
   artistAccountId = ren.id;
   artistCookie = sessionCookie(ren.id, 'ARTIST');
   clientCookie = sessionCookie(client.id, 'CLIENT');
-  ownProjectId = (await createProject(ren.artist!.id)).id;
+  const tag = await prisma.tag.create({ data: { name: `${prefix}-style` } });
+  tagId = tag.id;
+
+  // Dates fixed so the newest-first order is known
+  olderProjectId = (await createProject(ren.artist!.id, null, { createdAt: new Date('2026-11-01T10:00:00Z') })).id;
+  ownProjectId = (
+    await createProject(ren.artist!.id, null, {
+      createdAt: new Date('2026-11-10T10:00:00Z'),
+      clientBudgetMin: 300,
+      clientBudgetMax: 450,
+      clientAvailability: ['TUE_PM'],
+      tags: { create: [{ tagId }] },
+    })
+  ).id;
+  framingProjectId = (await createProject(ren.artist!.id, null, { status: 'FRAMING' })).id;
   otherProjectId = (await createProject(kai.artist!.id)).id;
 });
 
@@ -34,6 +54,7 @@ afterAll(async () => {
   await prisma.project.deleteMany({ where: { artistId: { in: artistIds } } });
   await prisma.artist.deleteMany({ where: { id: { in: artistIds } } });
   await prisma.account.deleteMany({ where: { id: { in: accountIds } } });
+  await prisma.tag.delete({ where: { id: tagId } });
   await prisma.$disconnect();
 });
 
@@ -61,11 +82,26 @@ describe('GET /api/artist/projects/:id', () => {
     expect(res.body).toMatchObject({ code: 'forbidden' });
   });
 
-  it("returns the artist's own project", async () => {
+  it('returns everything the prospect entered, and nothing more', async () => {
     const res = await request(app).get(`/api/artist/projects/${ownProjectId}`).set('Cookie', artistCookie);
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ id: ownProjectId, status: 'REQUEST' });
+    expect(res.body).toEqual({
+      id: ownProjectId,
+      status: 'REQUEST',
+      createdAt: '2026-11-10T10:00:00.000Z',
+      firstName: 'Léa',
+      lastName: 'Martin',
+      email: 'lea@example.com',
+      bodyArea: 'Nuque',
+      size: '8 cm',
+      styles: [{ id: tagId, name: `${prefix}-style` }],
+      budgetMin: 300,
+      budgetMax: 450,
+      description: 'Un ensō.',
+      availability: ['TUE_PM'],
+      flexibleSchedule: false,
+    });
   });
 
   it("returns 404 for another artist's project, as if it did not exist", async () => {
@@ -86,5 +122,52 @@ describe('GET /api/artist/projects/:id', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toMatchObject({ code: 'validation_error', errors: { id: 'invalid_id' } });
+  });
+});
+
+describe('GET /api/artist/projects', () => {
+  it('returns 403 for a client', async () => {
+    const res = await request(app).get('/api/artist/projects').set('Cookie', clientCookie);
+
+    expect(res.status).toBe(403);
+  });
+
+  it("lists only the artist's requests, newest first", async () => {
+    const res = await request(app).get('/api/artist/projects?status=REQUEST').set('Cookie', artistCookie);
+
+    expect(res.status).toBe(200);
+    expect(res.body.map((project: { id: number }) => project.id)).toEqual([ownProjectId, olderProjectId]);
+    expect(res.body[0]).toEqual({
+      id: ownProjectId,
+      status: 'REQUEST',
+      createdAt: '2026-11-10T10:00:00.000Z',
+      firstName: 'Léa',
+      lastName: 'Martin',
+      bodyArea: 'Nuque',
+      styles: [{ id: tagId, name: `${prefix}-style` }],
+      budgetMin: 300,
+      budgetMax: 450,
+    });
+  });
+
+  it('lists every status without a filter', async () => {
+    const res = await request(app).get('/api/artist/projects').set('Cookie', artistCookie);
+
+    expect(res.body.map((project: { id: number }) => project.id)).toContain(framingProjectId);
+    expect(res.body).toHaveLength(3);
+  });
+
+  it('returns an empty list when the artist has no request', async () => {
+    const res = await request(app).get('/api/artist/projects?status=REQUEST').set('Cookie', emptyArtistCookie);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
+  });
+
+  it('returns 400 for an unknown status', async () => {
+    const res = await request(app).get('/api/artist/projects?status=DONE').set('Cookie', artistCookie);
+
+    expect(res.status).toBe(400);
+    expect(res.body).toMatchObject({ code: 'validation_error', errors: { status: 'invalid_status' } });
   });
 });

@@ -4,7 +4,9 @@
     "genericError": "Une erreur est survenue. Réessayez dans quelques instants.",
     "back": "Retour",
     "continue": "Continuer",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "notSpecified": "Non précisé",
+    "flexibleSchedule": "Emploi du temps variable"
   },
   "header": {
     "studio": "Atelier {{name}}",
@@ -76,11 +78,7 @@
       "bodyArea": "Emplacement",
       "styles": "Styles",
       "budget": "Budget",
-      "budgetFrom": "À partir de {{amount}}",
-      "budgetUpTo": "Jusqu’à {{amount}}",
       "availability": "Disponibilités",
-      "none": "Non précisé",
-      "flexible": "Emploi du temps variable",
       "consent": "J’accepte que {{name}} utilise ces informations pour étudier ma demande et me contacter. *",
       "privacy": "Envoi sans engagement ni paiement. Vos données restent privées.",
       "edit": "Modifier",
@@ -128,7 +126,8 @@
     "unknown_tag": "Un des styles choisis n’existe plus.",
     "consent_required": "Votre accord est nécessaire pour envoyer la demande.",
     "invalid_credentials": "Email ou mot de passe incorrect.",
-    "invalid_id": "Identifiant invalide."
+    "invalid_id": "Identifiant invalide.",
+    "invalid_status": "Statut inconnu."
   },
   "daysShort": {
     "MON": "Lun",
@@ -158,5 +157,33 @@
   },
   "myProjects": {
     "title": "Mes projets"
+  },
+  "budget": {
+    "from": "À partir de {{amount}}",
+    "upTo": "Jusqu’à {{amount}}"
+  },
+  "artistNav": {
+    "label": "Espace atelier",
+    "dashboard": "Tableau de bord",
+    "requests": "Demandes"
+  },
+  "requests": {
+    "eyebrow": "Atelier",
+    "title": "Demandes",
+    "count_one": "{{count}} demande en attente",
+    "count_other": "{{count}} demandes en attente",
+    "listLabel": "Demandes reçues, les plus récentes d’abord",
+    "emptyTitle": "Aucune demande pour l’instant",
+    "emptyText": "Les demandes arrivent ici dès qu’un prospect remplit le formulaire de votre page publique.",
+    "select": "Sélectionnez une demande pour voir son détail.",
+    "back": "Toutes les demandes",
+    "reference": "Demande IF-{{id}} · reçue le {{date}}",
+    "bodyArea": "Emplacement",
+    "size": "Taille",
+    "budget": "Budget",
+    "styles": "Styles",
+    "availability": "Disponibilités",
+    "description": "Description",
+    "notFound": "Cette demande n’existe pas ou n’est plus disponible."
   }
 }

@@ -1,12 +1,23 @@
 import { useEffect, useRef } from 'react';
 
-// For a new screen (step, confirmation): back to the top of the page, then the focus moves
-// to the title so screen readers announce it. Runs once, when the screen appears.
-export function useNewScreen<T extends HTMLElement>() {
+type NewScreenOptions = {
+  active?: boolean;
+  scroll?: 'top' | 'nearest';
+};
+
+// Focus on the title of a new screen so screen readers announce it
+export function useNewScreen<T extends HTMLElement>({ active = true, scroll = 'top' }: NewScreenOptions = {}) {
   const ref = useRef<T>(null);
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!active) {
+      return;
+    }
+    if (scroll === 'top') {
+      window.scrollTo(0, 0);
+    } else {
+      ref.current?.scrollIntoView({ block: 'nearest' });
+    }
     ref.current?.focus({ preventScroll: true });
-  }, []);
+  }, [active, scroll]);
   return ref;
 }
